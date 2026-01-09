@@ -9,50 +9,52 @@ const CONFIG = {
 const cvJson = {
     "name": "Simeon Martev",
     "title": "Chief Technology Officer at Identrics",
-    "bio": "Software developer with 15+ years of experience, currently leading teams of software engineers developing and implementing tailor-made software solutions in the field of data aggregation, data transformation, content enrichment, supporting business intelligence and media intelligence industries. Passionate about building scalable, maintainable, and efficient software solutions.",
+    "bio": "Chief Technology Officer at Identrics with 15+ years of experience in software development. Passionate about building scalable, maintainable, and efficient solutions for data aggregation, transformation, and content enrichment. Leading teams to deliver tailor-made software for Business Intelligence and Media Intelligence industries.",
     "contact": {
         "website": "https://smartev.wtf",
+        "team": "https://identrics.ai/team/",
         "linkedin": "https://www.linkedin.com/in/smartev/"
     },
-    "education": {
-        "university": "University of Ruse",
-        "period": "2007 - 2010"
-    },
-    "skills": [
-        "Python", "Perl", "PHP", "Scrapy", "PostgreSQL", "Elasticsearch", "Airflow", "spaCy",
-        "FastAPI", "RabbitMQ", "GraphDB", "Kafka", "Git", "Data Pipelines", "LLMs via API",
-        "Pyro", "Celery", "Django"
-    ],
-    "interests": [
-        "Data Pipelines", "Data Aggregation", "Data Transformation", "Content Enrichment",
-        "Business Intelligence", "Media Intelligence", "AI", "LLMs"
-    ],
     "experience": [
         {
             "company": "Identrics",
             "role": "Chief Technology Officer",
             "period": "Sep 2025 - Present",
-            "description": "Leading teams of software engineers developing and implementing tailor-made software solutions."
+            "description": "Leading engineering strategy, overseeing AI/ML integration, and managing data pipelines for BI and Media Intelligence."
         },
         {
             "company": "UpDataOne",
             "role": "VP of Engineering",
             "period": "Jan 2022 - Sep 2025",
-            "description": "Oversaw data aggregation, transformation, and enrichment processes."
+            "description": "Managed development teams and architected scalable solutions for data aggregation and content enrichment."
         },
         {
             "company": "UpDataOne",
             "role": "Senior Software Developer",
-            "period": "Apr 2012 - Sep 2025",
-            "description": "Developed and maintained complex data pipelines and CMS projects using Perl and Python."
+            "period": "Apr 2012 - Jan 2022",
+            "description": "Developed complex data pipelines and backend systems using Perl, Python, and Scrapy."
         },
         {
             "company": "Mag Dvartisign",
             "role": "Web Developer",
             "period": "Jan 2010 - Apr 2012",
-            "description": "Created bespoke websites and custom CMS solutions."
+            "description": "Web development and custom CMS solutions."
         }
     ],
+
+    "skills": [
+        "Python", "FastAPI", "Django", "Perl", "PHP", "Scrapy",
+        "PostgreSQL", "Elasticsearch", "GraphDB", "RabbitMQ", "Kafka", "Airflow",
+        "spaCy", "LLMs via API", "Pyro", "Celery", "Git", "Data Pipelines"
+    ],
+    "interests": [
+        "Data Pipelines", "Data Aggregation", "Data Transformation", "Content Enrichment",
+        "Business Intelligence", "Media Intelligence", "AI", "LLMs"
+    ],
+    "education": {
+        "university": "University of Ruse",
+        "period": "2007 - 2010"
+    },
     "side_quest": "Fëonor did nothing wrong."
 };
 
