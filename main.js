@@ -57,7 +57,7 @@ const cvJson = {
 };
 
 const fileSystem = {
-    "cv.json": JSON.stringify(cvJson, null, 4),
+    "cv.json": JSON.stringify(cvJson, null, 2),
     "README.md": "Welcome to the interactive CV of Simeon Martev.\nType 'help' to see available commands."
 };
 
@@ -111,9 +111,10 @@ function linkify(text) {
 
 function highlightJson(json) {
     if (typeof json !== 'string') {
-        json = JSON.stringify(json, null, 4);
+        json = JSON.stringify(json, null, 2);
     }
 
+    // First escape HTML entities in the raw JSON string
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
@@ -164,6 +165,67 @@ async function typeText(text, element, speed = 50) {
     }
 }
 
+// Optimized LLM-style typing function
+async function typeHtml(element, html, speed = 1) {
+    // Regex to split into: 
+    // 1. HTML Tags (<...>)
+    // 2. HTML Entities (&...;)
+    // 3. Regular text content
+    const regex = /(<[^>]*>)|(&[^;]+;)|([^<&]+)/g;
+    let match;
+    let buffer = ""; // Build the HTML string incrementally
+    let parts = [];
+
+    // Pre-parse the HTML into a linear sequence of atomic parts
+    while ((match = regex.exec(html)) !== null) {
+        if (match[1]) {
+            // Tag (e.g., <span class="json-key">)
+            parts.push({ text: match[1], isTag: true });
+        } else if (match[2]) {
+            // Entity (e.g., &quot;)
+            parts.push({ text: match[2], isTag: false });
+        } else if (match[3]) {
+            // Text content - split into chars for typing effect
+            const text = match[3];
+            for (let char of text) {
+                parts.push({ text: char, isTag: false });
+            }
+        }
+    }
+
+    // Stream the parts
+    for (let i = 0; i < parts.length; i++) {
+        buffer += parts[i].text;
+
+        // Only update DOM and pause if it's visible text (not a tag)
+        // OR if it's the very last part (to ensure closure)
+        if (!parts[i].isTag || i === parts.length - 1) {
+
+            // Batching: Update DOM every N chars for performance in turbo mode
+            // or every char if normal speed
+            const isBatchUpdate = (i % 3 === 0) || (i === parts.length - 1);
+
+            if (isBatchUpdate) {
+                element.innerHTML = buffer;
+                terminal.scrollTop = terminal.scrollHeight;
+
+                // Speed control
+                if (speed > 0) {
+                    let delay = speed;
+                    if (Math.random() > 0.99) delay += 30; // Occasional stutter
+                    await sleep(delay);
+                } else {
+                    // Turbo mode: minimal yield to prevent UI freeze
+                    if (i % 20 === 0) await sleep(0);
+                }
+            }
+        }
+    }
+    // Final ensure
+    element.innerHTML = buffer;
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
 async function typeCommand(text) {
     commandInput.value = "";
     for (let char of text) {
@@ -176,15 +238,34 @@ async function typeCommand(text) {
     const val = commandInput.value;
     commandInput.value = "";
     updateCursor();
-    processCommand(val, true);
+
+    // Special handling for the boot sequence cv.json
+    if (val === "cat cv.json") {
+        printLine(val, 'command');
+        // Manually trigger the typing effect for this specific boot command
+        const content = highlightJson(fileSystem["cv.json"]);
+        const line = document.createElement('div');
+        outputDiv.appendChild(line);
+
+        // Disable input while typing output
+        commandInput.disabled = true;
+
+        // Turbo speed: 0ms base delay, token batching handles the rest
+        await typeHtml(line, content, 0);
+
+        commandInput.disabled = false;
+        commandInput.focus();
+    } else {
+        processCommand(val, true);
+    }
 }
 
 function processCommand(input, automated = false) {
     const trimmedInput = input.trim();
     if (!trimmedInput) return;
 
-    printLine(trimmedInput, 'command');
     if (!automated) {
+        printLine(trimmedInput, 'command');
         commandHistory.push(trimmedInput);
         historyIndex = commandHistory.length;
     }
@@ -251,9 +332,10 @@ async function bootSequence() {
     // 4. Simulate user typing 'cat cv.json'
     await typeCommand("cat cv.json");
 
-    // 5. Enable input
-    commandInput.disabled = false;
-    commandInput.focus();
+    // 5. Enable input (handled inside typeCommand)
+    if (!commandInput.disabled) {
+        commandInput.focus();
+    }
 }
 
 // Input Handling
