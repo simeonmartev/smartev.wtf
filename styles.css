@@ -426,6 +426,29 @@ a:hover {
     color: var(--json-bracket);
 }
 
+/* Ghost / Remote Viewer Effects */
+.ghost-selected {
+    background-color: rgba(255, 0, 153, 0.25);
+    /* Subtler theme color selection */
+    text-shadow: none;
+    /* remove glow to look like raw system selection */
+}
+
+#ghost-cursor {
+    position: fixed;
+    width: 8px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.4);
+    /* Faint white/grey phantom */
+    pointer-events: none;
+    z-index: 100;
+    transition: all 0.15s ease-out;
+    /* Smooth organic movement */
+    display: none;
+    mix-blend-mode: overlay;
+    /* Blends weirdly with the pink */
+}
+
 /* Footer Disclaimer */
 #footer-disclaimer {
     color: rgba(255, 0, 153, 0.4);

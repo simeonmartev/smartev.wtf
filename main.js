@@ -226,6 +226,123 @@ async function typeHtml(element, html, speed = 1) {
     terminal.scrollTop = terminal.scrollHeight;
 }
 
+// Ghost / Remote Viewer Logic
+let ghostCursor;
+
+function initGhostCursor() {
+    ghostCursor = document.createElement('div');
+    ghostCursor.id = 'ghost-cursor';
+    document.body.appendChild(ghostCursor);
+
+    // Start very soon after load (2 seconds)
+    setTimeout(ghostSelectionLoop, 2000);
+
+    // Ghost typing after 10-12 seconds
+    setTimeout(ghostTypingLoop, 12000);
+}
+
+function ghostSelectionLoop() {
+    // Very frequent interruptions: every 2s to 7s
+    const delay = Math.random() * 5000 + 2000;
+    setTimeout(async () => {
+        await performGhostSelect();
+        ghostSelectionLoop();
+    }, delay);
+}
+
+async function performGhostSelect() {
+    // Only target visible text parts (JSON colored elements)
+    const targets = outputDiv.querySelectorAll('.json-key, .json-string, .json-number, .json-boolean');
+    if (targets.length === 0) return;
+
+    // Pick a random start
+    const startIndex = Math.floor(Math.random() * targets.length);
+    // Selection length (1-4 items)
+    const length = Math.floor(Math.random() * 4) + 1;
+
+    const selectedNodes = [];
+
+    // Move cursor to start position first
+    const startRect = targets[startIndex].getBoundingClientRect();
+    if (startRect.top === 0 && startRect.bottom === 0) return; // Element hidden/scrolled away
+
+    ghostCursor.style.left = (startRect.left - 5) + 'px';
+    ghostCursor.style.top = (startRect.top + startRect.height / 2 - 8) + 'px'; // Center vertically
+    ghostCursor.style.display = 'block';
+
+    await sleep(300); // Wait for cursor to arrive
+
+    // Simulate dragging selection
+    for (let i = 0; i < length; i++) {
+        if (startIndex + i < targets.length) {
+            const el = targets[startIndex + i];
+            const rect = el.getBoundingClientRect();
+
+            // Check if visible in viewport (rough check)
+            if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                el.classList.add('ghost-selected');
+                selectedNodes.push(el);
+
+                // Move cursor along
+                ghostCursor.style.left = (rect.right) + 'px';
+                ghostCursor.style.top = (rect.top + rect.height / 2 - 8) + 'px';
+
+                // Random drag speed
+                await sleep(Math.random() * 150 + 50);
+            }
+        }
+    }
+
+    // Hold selection (reading...)
+    await sleep(Math.random() * 1500 + 1000);
+
+    // Deselect
+    selectedNodes.forEach(el => el.classList.remove('ghost-selected'));
+    ghostCursor.style.display = 'none';
+}
+
+async function ghostTypingLoop() {
+    // Only type if input is empty and not angry mode (idle)
+    if (commandInput.value === '' && !document.body.classList.contains('angry-mode')) {
+        await performGhostTyping();
+    }
+    // Repeat rarely (30s - 60s)
+    setTimeout(ghostTypingLoop, Math.random() * 30000 + 30000);
+}
+
+async function performGhostTyping() {
+    const phrases = ["who is this?", "help", "is anyone there?", "stop watching", "system_reset"];
+    const text = phrases[Math.floor(Math.random() * phrases.length)];
+
+    // Simulate typing
+    for (let char of text) {
+        // If user interrupts (starts typing), abort immediately
+        if (commandInput.value !== text.substring(0, commandInput.value.length)) {
+            return;
+        }
+
+        commandInput.value += char;
+        updateCursor();
+
+        // Random typing speed with hesitations
+        await sleep(Math.random() * 150 + 50);
+    }
+
+    await sleep(1000); // Hesitate after finishing
+
+    // Delete quickly
+    while (commandInput.value.length > 0) {
+        // If user interrupts, abort
+        if (!text.startsWith(commandInput.value)) {
+            return;
+        }
+
+        commandInput.value = commandInput.value.slice(0, -1);
+        updateCursor();
+        await sleep(50); // Fast delete
+    }
+}
+
 async function typeCommand(text) {
     commandInput.value = "";
     for (let char of text) {
@@ -404,5 +521,6 @@ function resetIdleTimer() {
 // Start
 window.onload = () => {
     bootSequence();
-    resetIdleTimer(); // Start tracking
+    initGhostCursor(); // Initialize the ghost
+    resetIdleTimer();
 };
