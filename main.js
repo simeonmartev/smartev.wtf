@@ -1,52 +1,303 @@
+// Configuration
+const CONFIG = {
+    typingSpeed: 50,
+    bootPause: 2000,
+    prompt: "visitor@smartev.wtf:~$"
+};
+
+// Embedded Data
 const cvJson = {
     "name": "Simeon Martev",
-    "title": "VP of Engineering at Identrics",
-    "bio": "Software developer with 15+ years of experience, currently leading engineering teams at Identrics, a part of UpDataOne. Skilled in data extraction, aggregation, ETL, new technology research, and software architecture, with a strong background in CMS projects using Perl Catalyst and Python Django.",
+    "title": "Chief Technology Officer at Identrics",
+    "bio": "Software developer with 15+ years of experience, currently leading teams of software engineers developing and implementing tailor-made software solutions in the field of data aggregation, data transformation, content enrichment, supporting business intelligence and media intelligence industries. Passionate about building scalable, maintainable, and efficient software solutions.",
     "contact": {
         "website": "https://smartev.wtf",
-        "linkedin.com": "https://www.linkedin.com/in/smartev/"
+        "linkedin": "https://www.linkedin.com/in/smartev/"
     },
     "education": {
-        "degree": "Computer Science (Incomplete)",
-        "institution": "University of Ruse",
-        "year": "Drop out on the third year"
+        "university": "University of Ruse",
+        "period": "2007 - 2010"
     },
     "skills": [
-        "Python", "Perl", "PHP", "Scrapy", "PostgreSQL", "Elasticsearch", "Airflow", "spaCy", "FastAPI", "RabbitMQ", "GraphDB"
+        "Python", "Perl", "PHP", "Scrapy", "PostgreSQL", "Elasticsearch", "Airflow", "spaCy",
+        "FastAPI", "RabbitMQ", "GraphDB", "Kafka", "Git", "Data Pipelines", "LLMs via API",
+        "Pyro", "Celery", "Django"
+    ],
+    "interests": [
+        "Data Pipelines", "Data Aggregation", "Data Transformation", "Content Enrichment",
+        "Business Intelligence", "Media Intelligence", "AI", "LLMs"
     ],
     "experience": [
         {
-            "company": "UpDataOne (Identrics)",
-            "position": "VP of Engineering",
-            "period": "2012 - Present",
-            "responsibilities": [
-                "Developed and maintained CMS projects utilising Perl Catalyst and Python Django frameworks.",
-                "Oversaw data extraction and aggregation processes, ensuring data accuracy and efficiency.",
-                "Managed ETL tasks to facilitate seamless data integration between systems.",
-                "Conducted research on emerging technologies and integrated them into the company's workflow.",
-                "Designed software architecture to support scalable and maintainable systems.",
-                "Set up new projects, providing technical guidance and leadership."
-            ]
+            "company": "Identrics",
+            "role": "Chief Technology Officer",
+            "period": "Sep 2025 - Present",
+            "description": "Leading teams of software engineers developing and implementing tailor-made software solutions."
+        },
+        {
+            "company": "UpDataOne",
+            "role": "VP of Engineering",
+            "period": "Jan 2022 - Sep 2025",
+            "description": "Oversaw data aggregation, transformation, and enrichment processes."
+        },
+        {
+            "company": "UpDataOne",
+            "role": "Senior Software Developer",
+            "period": "Apr 2012 - Sep 2025",
+            "description": "Developed and maintained complex data pipelines and CMS projects using Perl and Python."
         },
         {
             "company": "Mag Dvartisign",
-            "position": "Web Developer",
-            "period": "2010 - 2012",
-            "responsibilities": [
-                "Created bespoke advert websites using PHP, ensuring high-quality design and functionality.",
-                "Developed custom WordPress themes and plugins to meet client requirements.",
-                "Utilised Drupal to build feature-rich web applications, tailored to client needs.",
-                "Implemented Joomla-based solutions to deliver responsive and visually appealing websites."
-            ]
-        },
-        {
-            "company": "Point Studio",
-            "position": "Web Developer",
-            "period": "2007 - 2009",
-            "responsibilities": [
-                "Designed and developed websites using PHP, adhering to best practices and client specifications."
-            ]
+            "role": "Web Developer",
+            "period": "Jan 2010 - Apr 2012",
+            "description": "Created bespoke websites and custom CMS solutions."
         }
-    ]
+    ],
+    "side_quest": "Fëonor did nothing wrong."
 };
-document.getElementById('cv-json').innerText = JSON.stringify(cvJson, null, 4);
+
+const fileSystem = {
+    "cv.json": JSON.stringify(cvJson, null, 4),
+    "README.md": "Welcome to the interactive CV of Simeon Martev.\nType 'help' to see available commands."
+};
+
+const commands = {
+    help: () => "Available commands:\n  help          - Show this help message\n  cat [file]    - Display file content (e.g., 'cat cv.json')\n  cv            - Shortcut for 'cat cv.json'\n  ls            - List files\n  clear         - Clear the terminal screen\n  whoami        - Display current user\n  feonor        - ???",
+    ls: () => Object.keys(fileSystem).join("\n"),
+    whoami: () => "visitor",
+    feonor: () => "Fëonor did nothing wrong.",
+    cv: () => highlightJson(fileSystem["cv.json"]),
+    clear: () => {
+        document.getElementById('output').innerHTML = "";
+        return "";
+    }
+};
+
+const terminal = document.getElementById('terminal');
+const outputDiv = document.getElementById('output');
+const commandInput = document.getElementById('command-input');
+const inputLine = document.getElementById('input-line');
+const promptSpan = document.getElementById('prompt');
+const cursor = document.querySelector('.blinking-cursor');
+
+let commandHistory = [];
+let historyIndex = -1;
+
+// Utilities
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function escapeHtml(text) {
+    if (!text) return text;
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function linkify(text) {
+    const urlRegex = /(https?:\/\/[^\s"]+)/g;
+    return text.replace(urlRegex, (url) => {
+        let cleanUrl = url;
+        let suffix = "";
+        if (url.endsWith('"') || url.endsWith("'")) {
+            cleanUrl = url.slice(0, -1);
+            suffix = url.slice(-1);
+        }
+        return `<a href="${cleanUrl}" target="_blank">${cleanUrl}</a>${suffix}`;
+    });
+}
+
+function highlightJson(json) {
+    if (typeof json !== 'string') {
+        json = JSON.stringify(json, null, 4);
+    }
+
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'json-key';
+                return `<span class="${cls}">${match.slice(0, -1)}</span><span class="json-bracket">:</span>`;
+            } else {
+                cls = 'json-string';
+                if (match.match(/^"https?:/)) {
+                    const url = match.slice(1, -1);
+                    return `"<a href="${url}" target="_blank" class="json-string">${url}</a>"`;
+                }
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+            cls = 'json-null';
+        }
+        return `<span class="${cls}">${match}</span>`;
+    });
+}
+
+function printLine(content, type = 'text') {
+    if (content === "") return;
+    const line = document.createElement('div');
+
+    if (type === 'command') {
+        line.innerHTML = `<span style="color: #ff0099; margin-right: 10px;">${promptSpan.innerText}</span>${escapeHtml(content)}`;
+    } else if (type === 'html') {
+        line.innerHTML = content;
+    } else {
+        let processedText = escapeHtml(content);
+        processedText = linkify(processedText);
+        line.innerHTML = processedText;
+    }
+
+    outputDiv.appendChild(line);
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function typeText(text, element, speed = 50) {
+    for (let char of text) {
+        element.textContent += char;
+        if (Math.random() > 0.95) await sleep(150);
+        await sleep(speed);
+    }
+}
+
+async function typeCommand(text) {
+    commandInput.value = "";
+    for (let char of text) {
+        commandInput.value += char;
+        updateCursor();
+        if (Math.random() > 0.9) await sleep(100);
+        await sleep(30 + Math.random() * 50);
+    }
+    await sleep(200);
+    const val = commandInput.value;
+    commandInput.value = "";
+    updateCursor();
+    processCommand(val, true);
+}
+
+function processCommand(input, automated = false) {
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return;
+
+    printLine(trimmedInput, 'command');
+    if (!automated) {
+        commandHistory.push(trimmedInput);
+        historyIndex = commandHistory.length;
+    }
+
+    const args = trimmedInput.split(' ');
+    const cmd = args[0].toLowerCase();
+
+    if (cmd === 'cat') {
+        const file = args[1];
+        if (file && fileSystem[file]) {
+            if (file.endsWith('.json')) {
+                printLine(highlightJson(fileSystem[file]), 'html');
+            } else {
+                printLine(fileSystem[file], 'text');
+            }
+        } else if (file) {
+            printLine(`cat: ${file}: No such file or directory`, 'text');
+        } else {
+            printLine("usage: cat [file]", 'text');
+        }
+    } else if (commands[cmd]) {
+        const result = commands[cmd]();
+        if (cmd === 'cv') {
+            printLine(result, 'html');
+        } else {
+            printLine(result, 'text');
+        }
+    } else {
+        printLine(`command not found: ${cmd}`, 'text');
+    }
+}
+
+async function bootSequence() {
+    commandInput.disabled = true;
+    inputLine.style.display = 'none';
+
+    // 1. Initial wait
+    const tempCursorLine = document.createElement('div');
+    tempCursorLine.innerHTML = '<span class="blinking-cursor" style="position:relative; display:inline-block;"></span>';
+    outputDiv.appendChild(tempCursorLine);
+
+    await sleep(CONFIG.bootPause);
+
+    outputDiv.removeChild(tempCursorLine);
+
+    // 2. Welcome message
+    const welcomeMsg = [
+        "Welcome to Smartev Terminal v1.0.0",
+        "Type 'help' for available commands."
+    ];
+
+    for (const msg of welcomeMsg) {
+        const line = document.createElement('div');
+        outputDiv.appendChild(line);
+        await typeText(msg, line, 30);
+        await sleep(300);
+    }
+
+    await sleep(1000);
+
+    // 3. Reveal Prompt & Input
+    inputLine.style.display = 'flex';
+
+    // 4. Simulate user typing 'cat cv.json'
+    await typeCommand("cat cv.json");
+
+    // 5. Enable input
+    commandInput.disabled = false;
+    commandInput.focus();
+}
+
+// Input Handling
+commandInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const cmd = commandInput.value;
+        commandInput.value = '';
+        updateCursor();
+        processCommand(cmd);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (historyIndex > 0) {
+            historyIndex--;
+            commandInput.value = commandHistory[historyIndex];
+            updateCursor();
+        }
+    } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            commandInput.value = commandHistory[historyIndex];
+            updateCursor();
+        } else {
+            historyIndex = commandHistory.length;
+            commandInput.value = '';
+            updateCursor();
+        }
+    }
+});
+
+commandInput.addEventListener('input', updateCursor);
+
+function updateCursor() {
+    const textLength = commandInput.value.length;
+    cursor.style.transform = `translateX(${textLength}ch)`;
+}
+
+// Keep focus
+document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') return;
+    if (window.getSelection().toString() === '') {
+        commandInput.focus();
+    }
+});
+
+// Start
+window.onload = bootSequence;

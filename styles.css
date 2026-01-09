@@ -1,23 +1,431 @@
+:root {
+    --bg-color: #1a1a1a;
+    --term-bg: #000000;
+    --text-color: #ff0099;
+    --header-bg: #2d2d2d;
+    --font-stack: 'Courier New', Courier, monospace;
+    --cursor-color: #ff0099;
+    --frame-border: #333;
+
+    /* Syntax Highlighting Colors */
+    --json-key: #ff0099;
+    /* Hot Pink (Theme) */
+    --json-string: #00ffcc;
+    /* Cyan */
+    --json-number: #ffbd2e;
+    /* Yellow/Orange */
+    --json-boolean: #bf00ff;
+    /* Purple */
+    --json-null: #666666;
+    /* Grey */
+    --json-bracket: #ffffff;
+    /* White */
+}
+
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    /* display: flex; */
-    justify-content: left;
-    align-items: left;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    margin: 0;
+    padding: 0;
     min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.4;
 }
 
-.container {
-    background-color: #ffffff;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
 }
 
-pre {
+/* Aggressive/Unsettling CRT Flicker */
+@keyframes crt-flicker {
+    0% {
+        opacity: 0.99;
+        filter: brightness(1);
+    }
+
+    2% {
+        opacity: 0.5;
+        filter: brightness(0.7);
+    }
+
+    /* Deep sudden drop */
+    4% {
+        opacity: 0.96;
+        filter: brightness(1.2);
+    }
+
+    /* Flash */
+    6% {
+        opacity: 0.98;
+        filter: brightness(1);
+    }
+
+    8% {
+        opacity: 0.92;
+        filter: brightness(1);
+    }
+
+    10% {
+        opacity: 0.99;
+        filter: brightness(1);
+    }
+
+    12% {
+        opacity: 0.7;
+        filter: brightness(0.8);
+    }
+
+    /* Dip */
+    14% {
+        opacity: 0.95;
+        filter: brightness(1);
+    }
+
+    16% {
+        opacity: 0.99;
+        filter: brightness(1);
+    }
+
+    /* Long stable period to create tension */
+    40% {
+        opacity: 0.98;
+        filter: brightness(1);
+    }
+
+    /* Glitch cluster */
+    42% {
+        opacity: 0.3;
+        filter: brightness(2);
+    }
+
+    /* Bright flash glitch */
+    43% {
+        opacity: 0.95;
+        filter: brightness(1);
+    }
+
+    44% {
+        opacity: 0.4;
+        filter: brightness(0.5);
+    }
+
+    45% {
+        opacity: 0.98;
+        filter: brightness(1);
+    }
+
+    60% {
+        opacity: 0.95;
+        filter: brightness(1);
+    }
+
+    /* Subtle pulsing */
+    70% {
+        opacity: 0.85;
+        filter: brightness(0.9);
+    }
+
+    75% {
+        opacity: 0.95;
+        filter: brightness(1.1);
+    }
+
+    80% {
+        opacity: 0.9;
+        filter: brightness(1);
+    }
+
+    /* Random drop */
+    92% {
+        opacity: 0.2;
+        filter: brightness(0);
+    }
+
+    /* Almost blackout */
+    93% {
+        opacity: 0.98;
+        filter: brightness(1.4);
+    }
+
+    /* Recovery flash */
+    95% {
+        opacity: 0.99;
+        filter: brightness(1);
+    }
+
+    100% {
+        opacity: 0.94;
+        filter: brightness(1);
+    }
+}
+
+@keyframes text-jitter {
+    0% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+
+    98% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+
+    99% {
+        text-shadow: 2px 0 2px rgba(255, 0, 153, 0.5), -2px 0 2px rgba(0, 255, 255, 0.5);
+        transform: translate(1px, 0);
+    }
+
+    /* RGB split effect */
+    100% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+}
+
+#terminal-container {
+    width: 900px;
+    max-width: 95%;
+    height: 80vh;
+    background-color: var(--term-bg);
+    border: 1px solid var(--frame-border);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 153, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    animation: crt-flicker 3.2s infinite steps(60);
+    /* Steps makes it jerkier/more digital */
+}
+
+.terminal-header {
+    background-color: var(--header-bg);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--frame-border);
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+    margin-right: 15px;
+}
+
+.buttons span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.close {
+    background-color: #ff5f56;
+}
+
+.minimize {
+    background-color: #ffbd2e;
+}
+
+.maximize {
+    background-color: #27c93f;
+}
+
+.title {
+    color: #ccc;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 50px;
+    /* Balance the buttons */
+}
+
+#terminal {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-color) var(--term-bg);
+    animation: text-jitter 4s infinite;
+    /* Occasional text glitch */
+}
+
+/* Custom Scrollbar */
+#terminal::-webkit-scrollbar {
+    width: 8px;
+}
+
+#terminal::-webkit-scrollbar-track {
+    background: var(--term-bg);
+}
+
+#terminal::-webkit-scrollbar-thumb {
+    background-color: var(--text-color);
+    border-radius: 4px;
+    border: 2px solid var(--term-bg);
+}
+
+#output {
     white-space: pre-wrap;
+    margin-bottom: 5px;
+}
+
+#input-line {
+    display: none;
+    /* Hidden initially, revealed by JS */
+    align-items: center;
+    min-height: 24px;
+}
+
+#prompt {
+    margin-right: 10px;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+#input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+#command-input {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    caret-color: transparent;
+    z-index: 2;
+}
+
+.blinking-cursor {
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--text-color);
+    animation: blink 1s step-end infinite;
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: underline;
+    position: relative;
+    z-index: 5;
+    /* Ensure links are clickable above other layers */
+}
+
+a:hover {
+    background-color: var(--text-color);
+    color: var(--term-bg);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Syntax Highlighting */
+.json-key {
+    color: var(--json-key);
+    font-weight: bold;
+}
+
+.json-string {
+    color: var(--json-string);
+}
+
+.json-number {
+    color: var(--json-number);
+}
+
+.json-boolean {
+    color: var(--json-boolean);
+}
+
+.json-null {
+    color: var(--json-null);
+}
+
+.json-bracket {
+    color: var(--json-bracket);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+        align-items: flex-start;
+        /* Full height on mobile */
+    }
+
+    #terminal-container {
+        width: 100%;
+        height: 100vh;
+        max-width: 100%;
+        border: none;
+        border-radius: 0;
+        animation: none;
+        /* Disable intense flicker on mobile for battery/readability */
+    }
+
+    #terminal {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    #prompt {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+    #command-input {
+        font-size: 14px;
+    }
+
+    .terminal-header {
+        padding: 8px 10px;
+    }
 }

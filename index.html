@@ -2,33 +2,40 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>smartev</title>
-    <style>
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.7vw;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .section {
-            width: 30%;
-            width: 666px;
-            max-width: calc(100% - 300px);
-            margin: 100px auto;
-            padding: 0 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description"
+        content="Simeon Martev - CTO at Identrics. Interactive terminal CV showcasing experience in data aggregation, ETL, Python, and software architecture.">
+    <meta name="keywords"
+        content="Simeon Martev, CTO, Identrics, Python, Perl, Data Aggregation, ETL, Software Architect, CV, Interactive Terminal">
+    <meta name="author" content="Simeon Martev">
+    <title>Simeon Martev | CTO @ Identrics</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="section">
-        <p><a href="https://www.linkedin.com/in/smartev/">Simeon Martev</a></p>
-        <p> Hey, I am Simeon, </p>
-        <p> Text me on the Palantir or LinkedIn </p>
+    <div class="scanlines"></div>
+    <div id="terminal-container">
+        <div class="terminal-header">
+            <div class="buttons">
+                <span class="close"></span>
+                <span class="minimize"></span>
+                <span class="maximize"></span>
+            </div>
+            <div class="title">visitor@smartev.wtf: ~</div>
+        </div>
+        <div id="terminal">
+            <div id="output"></div>
+            <div id="input-line">
+                <span id="prompt">visitor@smartev.wtf:~$</span>
+                <div id="input-wrapper">
+                    <input type="text" id="command-input" autocomplete="off" autofocus>
+                    <div class="blinking-cursor"></div>
+                </div>
+            </div>
+        </div>
     </div>
-
+    <script src="main.js"></script>
 </body>
+
+</html>
