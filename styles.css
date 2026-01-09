@@ -40,25 +40,27 @@ body {
     /* Ensure footer stacks below terminal */
     font-size: 16px;
     line-height: 1.4;
+    transition: background-color 5s ease;
+    /* Slow fade for angry mode */
 }
 
-/* 1. Interlacing / Scanlines Overlay */
+/* 1. Interlacing / Scanlines Overlay + Static Noise */
 .scanlines {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* Create fine horizontal lines for interlacing look */
-    background: linear-gradient(to bottom,
-            rgba(18, 16, 16, 0) 50%,
-            rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
+    /* Create fine horizontal lines + Static Grain */
+    background:
+        linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E');
+    background-size: 100% 4px, 200px 200px;
     pointer-events: none;
     z-index: 10;
 }
 
-/* 2. Rolling Scanline Bar (Raster Scan Regeneration) */
+/* 2. Rolling Scanline Bar (Breathing Beam) */
 .scanlines::before {
     content: " ";
     display: block;
@@ -71,10 +73,10 @@ body {
             rgba(255, 255, 255, 0) 50%,
             rgba(255, 0, 153, 0.08) 50%,
             rgba(255, 0, 153, 0.08));
-    background-size: 100% 30px;
+    background-size: 100% 120px;
     /* Wider rolling bar */
-    animation: roll 15s linear infinite, bar-glitch 5s ease infinite;
-    /* Slower roll + Glitch */
+    animation: roll 15s ease-in-out infinite, bar-glitch 5s ease infinite;
+    /* Breathing roll + Glitch */
     pointer-events: none;
     z-index: 11;
 }
@@ -84,11 +86,14 @@ body {
         background-position: 0 0;
     }
 
-    100% {
-        background-position: 0 1000px;
+    50% {
+        background-position: 0 600px;
     }
 
-    /* Move vertically */
+    /* Focus in middle */
+    100% {
+        background-position: 0 1200px;
+    }
 }
 
 /* Subtle opacity flicker for the rolling bar */
@@ -126,57 +131,69 @@ body {
     }
 }
 
-/* 3. Phosphor Decay / V-Hold Flicker */
-/* Simulates the beam losing sync or phosphors fading */
-@keyframes phosphor-flicker {
+/* 3. The 12Hz Stare (Uncomfortable Pulse) */
+@keyframes kubrick-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.94;
+    }
+
+    /* Just enough to be felt, not seen clearly */
+}
+
+/* 4. V-Hold Slip */
+@keyframes v-hold-slip {
     0% {
-        opacity: 0.99;
+        transform: translateY(0);
     }
 
-    45% {
-        opacity: 0.99;
-    }
-
-    46% {
-        opacity: 0.4;
-    }
-
-    /* Quick fade (decay) */
-    47% {
-        opacity: 0.9;
-    }
-
-    48% {
-        opacity: 0.99;
-    }
-
-    90% {
-        opacity: 0.99;
-    }
-
-    91% {
-        opacity: 0.8;
-    }
-
-    92% {
-        opacity: 0.99;
-    }
-
-    96% {
-        opacity: 1;
-    }
-
-    97% {
-        opacity: 0.6;
-    }
-
-    /* V-sync slip */
     98% {
-        opacity: 1;
+        transform: translateY(0);
+    }
+
+    99% {
+        transform: translateY(15px);
+    }
+
+    /* Slow drift */
+    99.5% {
+        transform: translateY(-5px);
+    }
+
+    /* Snap back */
+    100% {
+        transform: translateY(0);
     }
 }
 
-@keyframes text-jitter {
+/* 5. Subliminal Flash */
+@keyframes subliminal-flash {
+
+    0%,
+    99% {
+        opacity: 0;
+        transform: scale(0.9) translate(-50%, -50%);
+    }
+
+    99.1% {
+        opacity: 0.08;
+        transform: scale(1) translate(-50%, -50%);
+    }
+
+    /* Very faint */
+    100% {
+        opacity: 0;
+        transform: scale(1) translate(-50%, -50%);
+    }
+}
+
+/* Ghosting Text Effect */
+@keyframes ghost-jitter {
     0% {
         text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
         transform: translate(0, 0);
@@ -188,15 +205,45 @@ body {
     }
 
     99% {
-        text-shadow: 2px 0 2px rgba(255, 0, 153, 0.5), -2px 0 2px rgba(0, 255, 255, 0.5);
-        transform: translate(1px, 1px);
+        text-shadow: 2px 0 5px rgba(255, 0, 153, 0.6), -2px 0 5px rgba(0, 255, 255, 0.4);
+        transform: translate(1px, 0);
     }
 
-    /* RGB split + V-slip */
+    /* Offset ghosting */
     100% {
         text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
         transform: translate(0, 0);
     }
+}
+
+/* Subliminal Element */
+#subliminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    /* Eye/Lens shape */
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    animation: subliminal-flash 23s infinite;
+    /* Prime number duration to offset patterns */
+}
+
+#subliminal::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: var(--text-color);
+    border-radius: 50%;
 }
 
 #terminal-container {
@@ -212,20 +259,14 @@ body {
     position: relative;
     z-index: 1;
     overflow: hidden;
-    /* Apply phosphor flicker to the whole container */
-    animation: phosphor-flicker 0.1s infinite;
-    /* Very fast refresh rate flicker (60hz-ish simulation) */
-    /* Note: 0.1s is 10Hz, maybe too slow for real refresh, but good for "bad sync" effect. Let's try chaotic timing. */
-    animation: phosphor-flicker 4s infinite;
+
+    /* 12Hz Stare + V-Hold Slip */
+    /* 0.083s = ~12Hz */
+    animation: kubrick-pulse 0.083s infinite, v-hold-slip 45s infinite ease-in-out;
     margin-bottom: 20px;
-    /* Space for footer */
 }
 
-/* Override animation for more control if needed */
-#terminal-container {
-    animation: phosphor-flicker 6s infinite steps(120);
-    /* Steps for digital/analog feel */
-}
+/* Header removed - no styles needed for .terminal-header, .buttons, .title */
 
 #terminal {
     flex-grow: 1;
@@ -234,8 +275,35 @@ body {
     text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
     scrollbar-width: thin;
     scrollbar-color: var(--text-color) var(--term-bg);
-    animation: text-jitter 4s infinite;
-    /* Occasional text glitch */
+    animation: ghost-jitter 4s infinite;
+}
+
+/* Angry Mode (Idle State) */
+body.angry-mode {
+    --text-color: #ff0000;
+    --cursor-color: #ff0000;
+    --json-key: #ff0000;
+    --json-string: #ff4444;
+    --json-number: #cc0000;
+    --json-boolean: #990000;
+    --json-null: #660000;
+    --json-bracket: #ff0000;
+}
+
+body.angry-mode #terminal-container {
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+    border-color: #500;
+    /* Faster 12Hz pulse, frequent V-slips */
+    animation: kubrick-pulse 0.083s infinite, v-hold-slip 10s infinite;
+}
+
+body.angry-mode .scanlines::before {
+    background: linear-gradient(to bottom,
+            rgba(255, 0, 0, 0) 50%,
+            rgba(255, 0, 0, 0.1) 50%,
+            rgba(255, 0, 0, 0.1));
+    animation-duration: 2s;
+    /* Hyperventilating beam */
 }
 
 /* Custom Scrollbar */
@@ -366,7 +434,7 @@ a:hover {
     text-align: center;
     margin-top: 10px;
     font-family: var(--font-stack);
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 1px;
     z-index: 20;
     text-shadow: 0 0 2px rgba(255, 0, 153, 0.1);

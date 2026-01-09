@@ -340,6 +340,8 @@ async function bootSequence() {
 
 // Input Handling
 commandInput.addEventListener('keydown', (e) => {
+    resetIdleTimer(); // Activity detected
+
     if (e.key === 'Enter') {
         const cmd = commandInput.value;
         commandInput.value = '';
@@ -366,20 +368,41 @@ commandInput.addEventListener('keydown', (e) => {
     }
 });
 
-commandInput.addEventListener('input', updateCursor);
+commandInput.addEventListener('input', () => {
+    updateCursor();
+    resetIdleTimer();
+});
 
 function updateCursor() {
     const textLength = commandInput.value.length;
     cursor.style.transform = `translateX(${textLength}ch)`;
 }
 
-// Keep focus
+// Keep focus and track idle
 document.addEventListener('click', (e) => {
+    resetIdleTimer();
     if (e.target.tagName === 'A') return;
     if (window.getSelection().toString() === '') {
         commandInput.focus();
     }
 });
 
+document.addEventListener('mousemove', resetIdleTimer);
+
+// Idle Timer Logic
+let idleTimer;
+const IDLE_TIMEOUT = 10000; // 10 seconds
+
+function resetIdleTimer() {
+    document.body.classList.remove('angry-mode');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+        document.body.classList.add('angry-mode');
+    }, IDLE_TIMEOUT);
+}
+
 // Start
-window.onload = bootSequence;
+window.onload = () => {
+    bootSequence();
+    resetIdleTimer(); // Start tracking
+};
