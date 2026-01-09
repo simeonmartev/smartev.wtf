@@ -9,7 +9,7 @@ const CONFIG = {
 const cvJson = {
     "name": "Simeon Martev",
     "title": "Chief Technology Officer at Identrics",
-    "bio": "Chief Technology Officer at Identrics with 15+ years of experience in software development. Passionate about building scalable, maintainable, and efficient solutions for data aggregation, transformation, and content enrichment. Leading teams to deliver tailor-made software for Business Intelligence and Media Intelligence industries.",
+    "bio": "In the shadowed lands of data aggregation and transformation, I lead legions of software engineers to craft the One Code to rule all data, to delve deep into the depths of content enrichment, unearthing precious insights to empower the realms of business and media intelligence.",
     "contact": {
         "website": "https://smartev.wtf",
         "team": "https://identrics.ai/team/",
@@ -40,22 +40,7 @@ const cvJson = {
             "period": "Jan 2010 - Apr 2012",
             "description": "Web development and custom CMS solutions."
         }
-    ],
-
-    "skills": [
-        "Python", "FastAPI", "Django", "Perl", "PHP", "Scrapy",
-        "PostgreSQL", "Elasticsearch", "GraphDB", "RabbitMQ", "Kafka", "Airflow",
-        "spaCy", "LLMs via API", "Pyro", "Celery", "Git", "Data Pipelines"
-    ],
-    "interests": [
-        "Data Pipelines", "Data Aggregation", "Data Transformation", "Content Enrichment",
-        "Business Intelligence", "Media Intelligence", "AI", "LLMs"
-    ],
-    "education": {
-        "university": "University of Ruse",
-        "period": "2007 - 2010"
-    },
-    "side_quest": "Fëonor did nothing wrong."
+    ]
 };
 
 const fileSystem = {
@@ -432,7 +417,7 @@ async function bootSequence() {
 
     // 2. Welcome message
     const welcomeMsg = [
-        "Welcome to Smartev Terminal v1.0.0",
+        "Welcome ...",
         "Type 'help' for available commands."
     ];
 
