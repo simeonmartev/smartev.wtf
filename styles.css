@@ -1,23 +1,516 @@
+:root {
+    --bg-color: #1a1a1a;
+    --term-bg: #000000;
+    --text-color: #ff0099;
+    --header-bg: #2d2d2d;
+    --font-stack: 'Courier New', Courier, monospace;
+    --cursor-color: #ff0099;
+    --frame-border: #333;
+
+    /* Syntax Highlighting Colors */
+    --json-key: #ff0099;
+    /* Hot Pink (Theme) */
+    --json-string: #00ffcc;
+    /* Cyan */
+    --json-number: #ffbd2e;
+    /* Yellow/Orange */
+    --json-boolean: #bf00ff;
+    /* Purple */
+    --json-null: #666666;
+    /* Grey */
+    --json-bracket: #ffffff;
+    /* White */
+}
+
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    /* display: flex; */
-    justify-content: left;
-    align-items: left;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    margin: 0;
+    padding: 0;
     min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* Ensure footer stacks below terminal */
+    font-size: 16px;
+    line-height: 1.4;
+    transition: background-color 5s ease;
+    /* Slow fade for angry mode */
 }
 
-.container {
-    background-color: #ffffff;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+/* 1. Interlacing / Scanlines Overlay + Static Noise */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Create fine horizontal lines + Static Grain */
+    background:
+        linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E');
+    background-size: 100% 4px, 200px 200px;
+    pointer-events: none;
+    z-index: 10;
 }
 
-pre {
+/* 2. Rolling Scanline Bar (Breathing Beam) */
+.scanlines::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0) 50%,
+            rgba(255, 0, 153, 0.08) 50%,
+            rgba(255, 0, 153, 0.08));
+    background-size: 100% 120px;
+    /* Wider rolling bar */
+    animation: roll 15s ease-in-out infinite, bar-glitch 5s ease infinite;
+    /* Breathing roll + Glitch */
+    pointer-events: none;
+    z-index: 11;
+}
+
+@keyframes roll {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 0 600px;
+    }
+
+    /* Focus in middle */
+    100% {
+        background-position: 0 1200px;
+    }
+}
+
+/* Subtle opacity flicker for the rolling bar */
+@keyframes bar-glitch {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    52% {
+        opacity: 0.5;
+    }
+
+    54% {
+        opacity: 1;
+    }
+
+    92% {
+        opacity: 1;
+    }
+
+    93% {
+        opacity: 0.2;
+    }
+
+    94% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* 3. The 12Hz Stare (Uncomfortable Pulse) */
+@keyframes kubrick-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.94;
+    }
+
+    /* Just enough to be felt, not seen clearly */
+}
+
+/* 4. V-Hold Slip */
+@keyframes v-hold-slip {
+    0% {
+        transform: translateY(0);
+    }
+
+    98% {
+        transform: translateY(0);
+    }
+
+    99% {
+        transform: translateY(15px);
+    }
+
+    /* Slow drift */
+    99.5% {
+        transform: translateY(-5px);
+    }
+
+    /* Snap back */
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* 5. Subliminal Flash */
+@keyframes subliminal-flash {
+
+    0%,
+    99% {
+        opacity: 0;
+        transform: scale(0.9) translate(-50%, -50%);
+    }
+
+    99.1% {
+        opacity: 0.08;
+        transform: scale(1) translate(-50%, -50%);
+    }
+
+    /* Very faint */
+    100% {
+        opacity: 0;
+        transform: scale(1) translate(-50%, -50%);
+    }
+}
+
+/* Ghosting Text Effect */
+@keyframes ghost-jitter {
+    0% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+
+    98% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+
+    99% {
+        text-shadow: 2px 0 5px rgba(255, 0, 153, 0.6), -2px 0 5px rgba(0, 255, 255, 0.4);
+        transform: translate(1px, 0);
+    }
+
+    /* Offset ghosting */
+    100% {
+        text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+        transform: translate(0, 0);
+    }
+}
+
+/* Subliminal Element */
+#subliminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    /* Eye/Lens shape */
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    animation: subliminal-flash 23s infinite;
+    /* Prime number duration to offset patterns */
+}
+
+#subliminal::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: var(--text-color);
+    border-radius: 50%;
+}
+
+#terminal-container {
+    width: 900px;
+    max-width: 95%;
+    height: 80vh;
+    background-color: var(--term-bg);
+    border: 1px solid var(--frame-border);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 153, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    /* 12Hz Stare + V-Hold Slip */
+    /* 0.083s = ~12Hz */
+    animation: kubrick-pulse 0.083s infinite, v-hold-slip 45s infinite ease-in-out;
+    margin-bottom: 20px;
+}
+
+/* Header removed - no styles needed for .terminal-header, .buttons, .title */
+
+#terminal {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    text-shadow: 0 0 2px rgba(255, 0, 153, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-color) var(--term-bg);
+    animation: ghost-jitter 4s infinite;
+}
+
+/* Angry Mode (Idle State) */
+body.angry-mode {
+    --text-color: #ff0000;
+    --cursor-color: #ff0000;
+    --json-key: #ff0000;
+    --json-string: #ff4444;
+    --json-number: #cc0000;
+    --json-boolean: #990000;
+    --json-null: #660000;
+    --json-bracket: #ff0000;
+}
+
+body.angry-mode #terminal-container {
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+    border-color: #500;
+    /* Faster 12Hz pulse, frequent V-slips */
+    animation: kubrick-pulse 0.083s infinite, v-hold-slip 10s infinite;
+}
+
+body.angry-mode .scanlines::before {
+    background: linear-gradient(to bottom,
+            rgba(255, 0, 0, 0) 50%,
+            rgba(255, 0, 0, 0.1) 50%,
+            rgba(255, 0, 0, 0.1));
+    animation-duration: 2s;
+    /* Hyperventilating beam */
+}
+
+/* Custom Scrollbar */
+#terminal::-webkit-scrollbar {
+    width: 8px;
+}
+
+#terminal::-webkit-scrollbar-track {
+    background: var(--term-bg);
+}
+
+#terminal::-webkit-scrollbar-thumb {
+    background-color: var(--text-color);
+    border-radius: 4px;
+    border: 2px solid var(--term-bg);
+}
+
+#output {
     white-space: pre-wrap;
+    margin-bottom: 5px;
+}
+
+#input-line {
+    display: none;
+    /* Hidden initially, revealed by JS */
+    align-items: center;
+    min-height: 24px;
+}
+
+#prompt {
+    margin-right: 10px;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+#input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+#command-input {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    caret-color: transparent;
+    z-index: 2;
+}
+
+.blinking-cursor {
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--text-color);
+    animation: blink 1s step-end infinite;
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: underline;
+    position: relative;
+    z-index: 5;
+    /* Ensure links are clickable above other layers */
+}
+
+a:hover {
+    background-color: var(--text-color);
+    color: var(--term-bg);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Syntax Highlighting */
+.json-key {
+    color: var(--json-key);
+    font-weight: bold;
+}
+
+.json-string {
+    color: var(--json-string);
+}
+
+.json-number {
+    color: var(--json-number);
+}
+
+.json-boolean {
+    color: var(--json-boolean);
+}
+
+.json-null {
+    color: var(--json-null);
+}
+
+.json-bracket {
+    color: var(--json-bracket);
+}
+
+/* Ghost / Remote Viewer Effects */
+.ghost-selected {
+    background-color: rgba(255, 0, 153, 0.25);
+    /* Subtler theme color selection */
+    text-shadow: none;
+    /* remove glow to look like raw system selection */
+}
+
+#ghost-cursor {
+    position: fixed;
+    width: 8px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.4);
+    /* Faint white/grey phantom */
+    pointer-events: none;
+    z-index: 100;
+    transition: all 0.15s ease-out;
+    /* Smooth organic movement */
+    display: none;
+    mix-blend-mode: overlay;
+    /* Blends weirdly with the pink */
+}
+
+/* Footer Disclaimer */
+#footer-disclaimer {
+    color: rgba(255, 0, 153, 0.4);
+    /* Faded hot pink */
+    font-size: 10px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--font-stack);
+    text-transform: lowercase;
+    letter-spacing: 1px;
+    z-index: 20;
+    text-shadow: 0 0 2px rgba(255, 0, 153, 0.1);
+}
+
+#footer-disclaimer .highlight {
+    color: rgba(255, 0, 153, 0.7);
+    /* Slightly brighter */
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+        align-items: flex-start;
+        /* Full height on mobile */
+        flex-direction: column;
+    }
+
+    #terminal-container {
+        width: 100%;
+        height: 100vh;
+        /* Full screen - footer space */
+        height: calc(100vh - 40px);
+        /* Leave space for footer */
+        max-width: 100%;
+        border: none;
+        border-radius: 0;
+        animation: none;
+        /* Disable intense flicker on mobile for battery/readability */
+        margin-bottom: 0;
+    }
+
+    #footer-disclaimer {
+        width: 100%;
+        padding: 10px;
+        background-color: #000;
+        margin-top: 0;
+        position: relative;
+    }
+
+    #terminal {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    #prompt {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+    #command-input {
+        font-size: 14px;
+    }
 }
