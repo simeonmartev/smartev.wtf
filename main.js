@@ -13,29 +13,34 @@ const cvJson = {
     "contact": {
         "website": "https://smartev.wtf",
         "team": "https://identrics.ai/team/",
-        "linkedin": "https://www.linkedin.com/in/smartev/"
+        "linkedin": "https://www.linkedin.com/in/smartev/",
+        "github": "https://github.com/simeonmartev"
     },
     "experience": [
         {
             "company": "Identrics",
+            "link": "https://identrics.ai/",
             "role": "Chief Technology Officer",
             "period": "Sep 2025 - Present",
             "description": "Leading engineering strategy, overseeing AI/ML integration, and managing data pipelines for BI and Media Intelligence."
         },
         {
             "company": "UpDataOne",
+            "link": "https://updata.one/",
             "role": "VP of Engineering",
             "period": "Jan 2022 - Sep 2025",
             "description": "Managed development teams and architected scalable solutions for data aggregation and content enrichment."
         },
         {
-            "company": "UpDataOne",
+            "company": "A Data Pro",
+            "link": "https://adata.pro/",
             "role": "Senior Software Developer",
             "period": "Apr 2012 - Jan 2022",
             "description": "Developed complex data pipelines and backend systems using Perl, Python, and Scrapy."
         },
         {
-            "company": "Mag Dvartisign",
+            "company": "Mag Advartisign",
+            "link": "https://www.mag.bg/",
             "role": "Web Developer",
             "period": "Jan 2010 - Apr 2012",
             "description": "Web development and custom CMS solutions."
@@ -298,7 +303,7 @@ async function ghostTypingLoop() {
 }
 
 async function performGhostTyping() {
-    const phrases = ["who is this?", "help", "is anyone there?", "stop watching", "system_reset"];
+    const phrases = ["who is this?", "help!", "is anyone there?", "stop watching", "system_reset"];
     const text = phrases[Math.floor(Math.random() * phrases.length)];
 
     // Simulate typing
