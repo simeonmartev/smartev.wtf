@@ -80,6 +80,8 @@ function renderBio() {
   el.textContent = cvJson.bio;
 }
 
+// cvJson is a compile-time constant — innerHTML interpolation is safe here.
+// If this ever sources from external input, escape all interpolated fields.
 function renderJob(job) {
   const highlightsHtml = job.highlights
     ? `<ul class="job-highlights">${job.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`
