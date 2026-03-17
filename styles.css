@@ -39,6 +39,21 @@ body {
   margin-bottom: 8px;
 }
 
+.name-prefix {
+  color: #FA369A;
+  margin-right: 0.35ch;
+  display: inline-block;
+  min-width: 1ch;
+  opacity: 1;
+  transition: opacity 0.06s ease;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
+.name-prefix.name-prefix--out {
+  opacity: 0;
+}
+
 .header-title {
   font-size: 17px;
   color: #93a1a1;
@@ -70,8 +85,19 @@ body {
   font-size: 17px;
   line-height: 1.9;
   color: #586e75;
-  margin-bottom: 52px;
+  padding-left: 20px;
+  border-left: 2px solid #eee8d5;
+  transition: border-color 0.2s;
 }
+
+.bio:hover {
+  border-left-color: #FA369A;
+}
+
+/* ── Bio paragraph spacing ── */
+.bio p { margin: 0; }
+.bio p + p { margin-top: 1em; }
+
 
 /* ── Section ── */
 .section {
@@ -90,6 +116,14 @@ body {
 
 .section-key .slash {
   color: #FA369A;
+  display: inline-block;
+  min-width: 1.6ch;
+  opacity: 1;
+  transition: opacity 0.06s ease;
+}
+
+.section-key .slash.slash--out {
+  opacity: 0;
 }
 
 .section-key::after {
@@ -135,7 +169,7 @@ body {
 }
 
 .job-description {
-  font-size: 16px;
+  font-size: 17px;
   color: #586e75;
   line-height: 1.8;
 }
@@ -146,7 +180,7 @@ body {
 }
 
 .job-highlights li {
-  font-size: 16px;
+  font-size: 17px;
   color: #586e75;
   line-height: 1.8;
   padding-left: 18px;
@@ -160,7 +194,82 @@ body {
   left: 0;
   color: #FA369A;
   font-size: 12px;
-  top: 4px;
+  top: 5px;
+  line-height: 1;
+}
+
+/* ── Skills ── */
+.skill-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: 20px;
+  border-left: 2px solid #eee8d5;
+  transition: border-color 0.2s;
+}
+
+.skill-grid:hover {
+  border-left-color: #FA369A;
+}
+
+.skill-row {
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+.skill-category {
+  color: #93a1a1;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.skill-items {
+  color: #586e75;
+}
+
+/* ── Languages ── */
+.lang-list {
+  padding-left: 20px;
+  font-size: 15px;
+  color: #586e75;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lang-list .sep {
+  color: #93a1a1;
+}
+
+.lang-name {
+  color: #073642;
+  font-weight: bold;
+}
+
+.lang-level {
+  color: #93a1a1;
+  font-size: 13px;
+}
+
+/* ── Inline links (within highlights, bio, descriptions) ── */
+.job-highlights li a,
+.job-description a,
+.bio a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(101, 123, 131, 0.5);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.job-highlights li a:hover,
+.job-description a:hover,
+.bio a:hover {
+  color: #FA369A;
+  border-bottom-color: rgba(250, 54, 154, 0.5);
 }
 
 /* ── Footer ── */
