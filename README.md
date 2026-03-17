@@ -16,4 +16,4 @@ You have found the digital dominion of **Simeon Martev**.
 
 Do not look for bugs. There is only my will.
 
-*— The Eye*
+*- The Eye*
