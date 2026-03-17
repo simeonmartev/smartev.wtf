@@ -1,19 +1,26 @@
-# THE ONE CV TO RULE THEM ALL
+# smartev.wtf
 
-**I SEE YOU.**
+**CV as a single page**
 
-You have found the digital dominion of **Simeon Martev**.
+Static CV for [Simeon Martev](https://smartev.wtf) - CTO at Identrics, 15+ years in data pipelines and AI systems. One HTML file, one CSS file, one JS file. Open and read.
 
-## THE POWER
-*   **CRT Effect**: The machine breathes.
-*   **Terminal**: It speaks for itself.
-*   **Angry Mode**: Do not test my patience.
+## What it is
 
-## INSTRUCTIONS
-1.  Clone.
-2.  Open `index.html`.
-3.  **SUBMIT.**
+- **Single-page CV** - header, bio, skills, experience, languages. All in one scroll.
+- **Code-flavoured layout** - section headers like `// bio`, `// skills` `// experience`.
+- **Vanilla everything** - no build, no npm, no React. Works with `file://` on any host.
 
-Do not look for bugs. There is only my will.
+## Run it
 
-*- The Eye*
+```bash
+git clone https://github.com/simeonmartev/smartev.wtf.git
+# Open index.html in a browser.
+```
+
+## Deploy
+
+Push to `main`. GitHub Pages + `CNAME` serve it. Done.
+
+---
+
+*Fëonor did nothing wrong.*
