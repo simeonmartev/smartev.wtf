@@ -33,7 +33,8 @@ const cvJson = {
                 "<a href=\"https://identrics.ai/media-contacts/\" target=\"_blank\" rel=\"noopener\">PINGRID</a> - a journalist intelligence platform that scans thousands of publications every day, picks up newly active authors, and keeps journalist profiles current with their topics and regional coverage. PR software providers use the API to stop manually maintaining their media databases.",
                 "Built TRACE Service - API first, event-driven press release monitoring service for the ANZ market using Python, Prefect, and FastAPI. It detects republished content across thousands of live outlets in under a second from publication.",
                 "NLP enrichment runs in-stream inside the Kafka pipelines — NER, Topic Classification, Text Normalisation, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a> are applied before a document ever hits the index. On-prem multilingual models handle the core pipeline; a multi-provider LLM layer sits on top for classification, summarisation, and entity resolution.",
-                "Represented Identrics at the <a href=\"https://identrics.ai/blog/sofia-information-integrity-forum-2025/\" target=\"_blank\" rel=\"noopener\">Sofia Information Integrity Forum 2025</a>."
+                "Represented Identrics at the <a href=\"https://identrics.ai/blog/sofia-information-integrity-forum-2025/\" target=\"_blank\" rel=\"noopener\">Sofia Information Integrity Forum 2025</a>.",
+                "Built Topify — a Python/Prefect pipeline for topic modelling and clustering on documents fetched from Elasticsearch. It builds structured cluster metadata per document and publishes enriched data downstream for analysis and visualisation. The pipeline powered monitoring of Bulgarian elections and political narrative shifts in real time."
             ]
         },
         {
@@ -59,8 +60,8 @@ const cvJson = {
             "period": "Apr 2012 – Jan 2022",
             "location": "Sofia, Bulgaria",
             "highlights": [
-                "Joined as a mid-level developer and grew into the Lead Architect role over ten years. During that time I modernised the whole engineering stack: brought in Elasticsearch, Kafka, Docker, and GitLab CI/CD, replacing what was essentially a cron-job-and-FTP setup with a proper automated pipeline processing millions of documents a month.",
-                "Built Perceptica, a Media Intelligence Platform for ingesting, enriching, and serving online news, social media, and broadcast content. The stack was RabbitMQ, Celery, and Elasticsearch.",
+                "Joined as a mid-level developer and grew into the Lead Architect role over ten years. During that time I modernised the whole engineering stack: brought in Elasticsearch, Docker, and GitLab CI/CD, replacing what was essentially a cron-job-and-FTP setup with a proper automated pipeline processing millions of documents a month.",
+                "Built <a href=\"https://perceptica.com\" target=\"_blank\" rel=\"noopener\">Perceptica</a>, a Media Intelligence Platform for ingesting, enriching, and serving online news, social media, and broadcast content. The stack was RabbitMQ, Celery, and Elasticsearch.",
                 "Developed OSINT tools for corporate due diligence and adverse media screening, using Python Scrapy and Google APIs to build risk profiles from public sources automatically."
             ]
         },
