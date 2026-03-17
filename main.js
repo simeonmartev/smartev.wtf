@@ -1,8 +1,8 @@
 // ── CV Data ──────────────────────────────────────────────────────────────────
 const cvJson = {
     "name": "Simeon Martev",
-    "title": "Technical Architect · Data & AI Systems Engineer",
-    "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer — taking millions of documents a day from unstructured sources and turning them into something clean and searchable, using Kafka, Elasticsearch, and Python. Over the years I have built and applied multilingual NLP pipelines for NER, Topic Classification, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a>.</p><p>I spend a lot of time on the validation and post-processing layers between the models and storage, making sure raw entity output is clean and confidence-scored before it reaches anything downstream.</p><p>These days I work with LLMs to build enrichment agents that automate parts of this pipeline. I do my best work in the code, not just the diagram.</p>",
+    "title": "CTO @ Identrics · Technical Architect · Data & AI Systems Engineer",
+    "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer - taking millions of documents a day from unstructured sources and turning them into something clean and searchable, using Kafka, Elasticsearch, and Python. Over the years I have built and applied multilingual NLP pipelines for NER, Topic Classification, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a>.</p><p>I spend a lot of time on the validation and post-processing layers between the models and storage, making sure raw entity output is clean and confidence-scored before it reaches anything downstream.</p><p>These days I work with LLMs to build enrichment agents that automate parts of this pipeline. I do my best work in the code, not just the diagram.</p>",
     "contact": {
         "website": "https://smartev.wtf",
         "team": "https://identrics.ai/team/",
@@ -10,11 +10,12 @@ const cvJson = {
         "github": "https://github.com/simeonmartev"
     },
     "skills": {
-        "Data & Streaming": ["Apache Kafka", "Elasticsearch", "Logstash", "Prefect", "Apache Airflow", "RabbitMQ", "Celery"],
-        "Languages & Frameworks": ["Python", "FastAPI", "Django REST Framework", "Scrapy", "PHP"],
-        "AI & NLP": ["Custom-trained multilingual NLP (NER, Topic, Sentiment)", "LLM Orchestration (OpenAI, Claude, Ollama)", "AI Agent Frameworks", "Entity-Based Sentiment Analysis", "SpaCy", "HuggingFace", "RAG"],
-        "Databases": ["Elasticsearch", "PostgreSQL", "Neo4j"],
-        "Infrastructure": ["Docker", "GitLab CI/CD", "On-prem self-hosted"]
+        "Data & Streaming": ["Elasticsearch", "Kibana", "Logstash", "Elastic DSL", "Prefect", "Apache Kafka", "Apache Airflow", "RabbitMQ", "Celery", "Pydantic"],
+        "Stack & Integration": ["Python", "FastAPI", "Django", "DRF", "asyncio", "Scrapy", "Selenium", "crawl4ai", "BrightData", "Apify"],
+        "AI & NLP": ["LLM Agents", "MCP Tools", "RAG", "LangExtract", "Multilingual NLP (NER, Topic, Sentiment)", "SpaCy", "HuggingFace"],
+        "LLM Tooling": ["Claude Code", "Cursor", "Ollama", "LM Studio"],
+        "Storage": ["Elasticsearch", "PostgreSQL", "Neo4j", "Meilisearch", "SQLite"],
+        "Infrastructure": ["Docker", "GitLab CI/CD", "Sentry", "Linux", "On-prem self-hosted"]
     },
     "languages": [
         { "lang": "Bulgarian", "level": "Native" },
@@ -28,10 +29,10 @@ const cvJson = {
             "period": "Sep 2025 – Present",
             "location": "Sofia, Bulgaria",
             "highlights": [
-                "<a href=\"https://identrics.ai/annex/\" target=\"_blank\" rel=\"noopener\">Annex</a> — a platform that unifies Identrics' AI services for media intelligence. It tracks how narratives develop and spread across networks, surfaces key influencers, and gives clients a view from first signal through to full analysis.",
-                "<a href=\"https://identrics.ai/media-contacts/\" target=\"_blank\" rel=\"noopener\">PINGRID</a> — a journalist intelligence platform that scans thousands of publications every day, picks up newly active authors, and keeps journalist profiles current with their topics and regional coverage. PR software providers use the API to stop manually maintaining their media databases.",
-                "Built TRACE — a press release monitoring service for the ANZ market using Python, Prefect, and FastAPI. It detects republished content across thousands of live outlets in under a second from publication.",
-                "The core enrichment pipeline runs on-prem multilingual NLP models for NER, Topic Classification, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a>. A multi-provider LLM layer (OpenAI, Claude, Ollama) sits on top for classification, summarisation, and entity resolution.",
+                "<a href=\"https://identrics.ai/annex/\" target=\"_blank\" rel=\"noopener\">Annex</a> - a platform that unifies Identrics' AI services for media intelligence. It tracks how narratives develop and spread across networks, surfaces key influencers, and gives clients a view from first signal through to full analysis.",
+                "<a href=\"https://identrics.ai/media-contacts/\" target=\"_blank\" rel=\"noopener\">PINGRID</a> - a journalist intelligence platform that scans thousands of publications every day, picks up newly active authors, and keeps journalist profiles current with their topics and regional coverage. PR software providers use the API to stop manually maintaining their media databases.",
+                "Built TRACE Service - API first, event-driven press release monitoring service for the ANZ market using Python, Prefect, and FastAPI. It detects republished content across thousands of live outlets in under a second from publication.",
+                "NLP enrichment runs in-stream inside the Kafka pipelines — NER, Topic Classification, Text Normalisation, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a> are applied before a document ever hits the index. On-prem multilingual models handle the core pipeline; a multi-provider LLM layer sits on top for classification, summarisation, and entity resolution.",
                 "Represented Identrics at the <a href=\"https://identrics.ai/blog/sofia-information-integrity-forum-2025/\" target=\"_blank\" rel=\"noopener\">Sofia Information Integrity Forum 2025</a>."
             ]
         },
@@ -42,10 +43,13 @@ const cvJson = {
             "period": "Jan 2022 – Sep 2025",
             "location": "Sofia, Bulgaria",
             "highlights": [
-                "Led a team of 5–10 engineers and personally built the main ingestion pipeline: 4+ million documents per day from print, broadcast, and social sources, processed through Kafka, Logstash, and Docker, indexed in Elasticsearch.",
-                "Built NLP enrichment directly into the Kafka pipelines. Entity-Based Sentiment Analysis, Named Entity Recognition, Topic Classification, and Text Normalisation all run in-stream, so by the time a document is indexed it is already enriched.",
-                "Streamlined and automated data enrichment for the <a href=\"https://identrics.ai/case-studies/how-we-built-real-impact-score-moving-beyond-vanity-metrics-in-media-intelligence/\" target=\"_blank\" rel=\"noopener\">REAL Impact Score</a> (Reach, Engagement, Authority, Leverage) — a composite score that puts a single number on media performance.",
-                "Built the Author Resolution System in Neo4j — graph-based matching and deduplication that links journalist identities across media sources at millions-of-documents scale."
+                "Led a team of 5–10 engineers and personally built the core ingestion pipeline: orchestrated crawling via Scrapy and RabbitMQ across 370k media outlets, producing over 20 million documents per month from print, broadcast, and social sources — processed through Kafka, Logstash, and Docker, indexed in Elasticsearch.",
+                "Introduced Elasticsearch to the company holding and Apache Airflow for pipeline orchestration — replacing ad-hoc scheduling with proper DAG-based workflows across the entire data platform.",
+                "For RDC (risk intelligence), orchestrated ingestion of thousands of sanctions lists via Scrapy and Airflow and designed the data model for sanction entities — enabling structured, queryable watchlist data at scale.",
+                "Introduced a human-in-the-loop validation dataflow: analysts review and correct enrichment output directly in Google Sheets, with automated sync back into the pipeline.",
+                "Streamlined and automated data enrichment for the <a href=\"https://identrics.ai/case-studies/how-we-built-real-impact-score-moving-beyond-vanity-metrics-in-media-intelligence/\" target=\"_blank\" rel=\"noopener\">REAL Impact Score</a> (Reach, Engagement, Authority, Leverage) - a composite score that puts a single number on media performance.",
+                "Built the Author Resolution System in Neo4j - graph-based matching and deduplication that links journalist identities across media sources at millions-of-documents scale.",
+                "<a href=\"https://identrics.ai/kaspian/\" target=\"_blank\" rel=\"noopener\">Kaspian</a> — intelligent enrichments at scale. Good data is the stepping stone for great AI-based services."
             ]
         },
         {
@@ -88,7 +92,7 @@ function renderHeader() {
   `;
 }
 
-// cvJson.bio is a compile-time constant — innerHTML is safe here.
+// cvJson.bio is a compile-time constant - innerHTML is safe here.
 function renderBio() {
     const el = document.getElementById('bio');
     el.innerHTML = `
@@ -163,7 +167,7 @@ function renderFooter() {
     const year = new Date().getFullYear();
     el.innerHTML = `
     <span>${cvJson.name} - ${year}</span>
-    <span>// generated with Claude</span>
+    <span>// generated by Sauron</span>
   `;
 }
 
