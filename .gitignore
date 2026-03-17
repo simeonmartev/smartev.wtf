@@ -1,1 +1,6 @@
 AGENT_CONTEXT.md
+docs/
+.agents/
+.superpowers/
+CLAUDE.md
+skills-lock.json

@@ -1,518 +1,253 @@
-// Configuration
-const CONFIG = {
-    typingSpeed: 50,
-    bootPause: 2000,
-    prompt: "visitor@smartev.wtf:~$"
-};
-
-// Embedded Data
+// ── CV Data ──────────────────────────────────────────────────────────────────
 const cvJson = {
     "name": "Simeon Martev",
-    "title": "Chief Technology Officer at Identrics",
-    "bio": "In the shadowed lands of data aggregation and transformation, I lead legions of software engineers to craft the One Code to rule all data, to delve deep into the depths of content enrichment, unearthing precious insights to empower the realms of business and media intelligence.",
+    "title": "CTO @ Identrics · Technical Architect · Data & AI Systems Engineer",
+    "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer - taking millions of documents a day from unstructured sources and turning them into something clean and searchable, using Kafka, Elasticsearch, and Python. Over the years I have built and applied multilingual NLP pipelines for NER, Topic Classification, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a>.</p><p>I spend a lot of time on the validation and post-processing layers between the models and storage, making sure raw entity output is clean and confidence-scored before it reaches anything downstream.</p><p>These days I work with LLMs to build enrichment agents that automate parts of this pipeline. I do my best work in the code, not just the diagram.</p>",
     "contact": {
         "website": "https://smartev.wtf",
         "team": "https://identrics.ai/team/",
         "linkedin": "https://www.linkedin.com/in/smartev/",
         "github": "https://github.com/simeonmartev"
     },
+    "skills": {
+        "Data & Streaming": ["Elasticsearch", "Kibana", "Logstash", "Elastic DSL", "Prefect", "Apache Kafka", "Apache Airflow", "RabbitMQ", "Celery", "Pydantic"],
+        "Stack & Integration": ["Python", "FastAPI", "Django", "DRF", "asyncio", "Scrapy", "Selenium", "crawl4ai", "BrightData", "Apify"],
+        "AI & NLP": ["LLM Agents", "MCP Tools", "RAG", "LangExtract", "Multilingual NLP (NER, Topic, Sentiment)", "SpaCy", "HuggingFace"],
+        "LLM Tooling": ["Claude Code", "Cursor", "Ollama", "LM Studio"],
+        "Storage": ["Elasticsearch", "PostgreSQL", "Neo4j", "Meilisearch", "SQLite"],
+        "Infrastructure": ["Docker", "GitLab CI/CD", "Sentry", "Linux", "On-prem self-hosted"]
+    },
+    "languages": [
+        { "lang": "Bulgarian", "level": "Native" },
+        { "lang": "English", "level": "Professional" }
+    ],
     "experience": [
         {
             "company": "Identrics",
             "link": "https://identrics.ai/",
             "role": "Chief Technology Officer",
-            "period": "Sep 2025 - Present",
-            "description": "Leading engineering strategy, overseeing AI/ML integration, and managing data pipelines for BI and Media Intelligence."
+            "period": "Sep 2025 – Present",
+            "location": "Sofia, Bulgaria",
+            "highlights": [
+                "<a href=\"https://identrics.ai/annex/\" target=\"_blank\" rel=\"noopener\">Annex</a> - a platform that unifies Identrics' AI services for media intelligence. It tracks how narratives develop and spread across networks, surfaces key influencers, and gives clients a view from first signal through to full analysis.",
+                "<a href=\"https://identrics.ai/media-contacts/\" target=\"_blank\" rel=\"noopener\">PINGRID</a> - a journalist intelligence platform that scans thousands of publications every day, picks up newly active authors, and keeps journalist profiles current with their topics and regional coverage. PR software providers use the API to stop manually maintaining their media databases.",
+                "Built TRACE Service - API first, event-driven press release monitoring service for the ANZ market using Python, Prefect, and FastAPI. It detects republished content across thousands of live outlets in under a second from publication.",
+                "NLP enrichment runs in-stream inside the Kafka pipelines — NER, Topic Classification, Text Normalisation, and <a href=\"https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/\" target=\"_blank\" rel=\"noopener\">Entity-Based Sentiment Analysis</a> are applied before a document ever hits the index. On-prem multilingual models handle the core pipeline; a multi-provider LLM layer sits on top for classification, summarisation, and entity resolution.",
+                "Represented Identrics at the <a href=\"https://identrics.ai/blog/sofia-information-integrity-forum-2025/\" target=\"_blank\" rel=\"noopener\">Sofia Information Integrity Forum 2025</a>."
+            ]
         },
         {
             "company": "UpDataOne",
             "link": "https://updata.one/",
             "role": "VP of Engineering",
-            "period": "Jan 2022 - Sep 2025",
-            "description": "Managed development teams and architected scalable solutions for data aggregation and content enrichment."
+            "period": "Jan 2022 – Sep 2025",
+            "location": "Sofia, Bulgaria",
+            "highlights": [
+                "Led a team of 5–10 engineers and personally built the core ingestion pipeline: orchestrated crawling via Scrapy and RabbitMQ across 370k media outlets, producing over 20 million documents per month from print, broadcast, and social sources — processed through Kafka, Logstash, and Docker, indexed in Elasticsearch.",
+                "Introduced Elasticsearch to the company holding and Apache Airflow for pipeline orchestration — replacing ad-hoc scheduling with proper DAG-based workflows across the entire data platform.",
+                "For RDC (risk intelligence), orchestrated ingestion of thousands of sanctions lists via Scrapy and Airflow and designed the data model for sanction entities — enabling structured, queryable watchlist data at scale.",
+                "Introduced a human-in-the-loop validation dataflow: analysts review and correct enrichment output directly in Google Sheets, with automated sync back into the pipeline.",
+                "Streamlined and automated data enrichment for the <a href=\"https://identrics.ai/case-studies/how-we-built-real-impact-score-moving-beyond-vanity-metrics-in-media-intelligence/\" target=\"_blank\" rel=\"noopener\">REAL Impact Score</a> (Reach, Engagement, Authority, Leverage) - a composite score that puts a single number on media performance.",
+                "Built the Author Resolution System in Neo4j - graph-based matching and deduplication that links journalist identities across media sources at millions-of-documents scale.",
+                "<a href=\"https://identrics.ai/kaspian/\" target=\"_blank\" rel=\"noopener\">Kaspian</a> — intelligent enrichments at scale. Good data is the stepping stone for great AI-based services."
+            ]
         },
         {
             "company": "A Data Pro",
             "link": "https://adata.pro/",
-            "role": "Senior Software Developer",
-            "period": "Apr 2012 - Jan 2022",
-            "description": "Developed complex data pipelines and backend systems using Perl, Python, and Scrapy."
+            "role": "Senior Software Developer & Lead Architect",
+            "period": "Apr 2012 – Jan 2022",
+            "location": "Sofia, Bulgaria",
+            "highlights": [
+                "Joined as a mid-level developer and grew into the Lead Architect role over ten years. During that time I modernised the whole engineering stack: brought in Elasticsearch, Kafka, Docker, and GitLab CI/CD, replacing what was essentially a cron-job-and-FTP setup with a proper automated pipeline processing millions of documents a month.",
+                "Built Perceptica, a Media Intelligence Platform for ingesting, enriching, and serving online news, social media, and broadcast content. The stack was RabbitMQ, Celery, and Elasticsearch.",
+                "Developed OSINT tools for corporate due diligence and adverse media screening, using Python Scrapy and Google APIs to build risk profiles from public sources automatically."
+            ]
         },
         {
             "company": "Mag Advartisign",
             "link": "https://www.mag.bg/",
             "role": "Web Developer",
-            "period": "Jan 2010 - Apr 2012",
-            "description": "Web development and custom CMS solutions."
+            "period": "Jan 2010 – Apr 2012",
+            "location": "Sofia, Bulgaria",
+            "description": "Full-stack web development and bespoke CMS solutions using PHP and WordPress for Bulgarian media and digital publishing clients."
         }
     ]
 };
 
-const fileSystem = {
-    "cv.json": JSON.stringify(cvJson, null, 2),
-    "README.md": "Welcome to the interactive CV of Simeon Martev.\nType 'help' to see available commands."
-};
+// ── Render ────────────────────────────────────────────────────────────────────
 
-const commands = {
-    help: () => "Available commands:\n  help          - Show this help message\n  cat [file]    - Display file content (e.g., 'cat cv.json')\n  cv            - Shortcut for 'cat cv.json'\n  ls            - List files\n  clear         - Clear the terminal screen\n  whoami        - Display current user\n  feonor        - ???",
-    ls: () => Object.keys(fileSystem).join("\n"),
-    whoami: () => "visitor",
-    feonor: () => "Fëonor did nothing wrong.",
-    cv: () => highlightJson(fileSystem["cv.json"]),
-    clear: () => {
-        document.getElementById('output').innerHTML = "";
-        return "";
-    }
-};
-
-const terminal = document.getElementById('terminal');
-const outputDiv = document.getElementById('output');
-const commandInput = document.getElementById('command-input');
-const inputLine = document.getElementById('input-line');
-const promptSpan = document.getElementById('prompt');
-const cursor = document.querySelector('.blinking-cursor');
-
-let commandHistory = [];
-let historyIndex = -1;
-
-// Utilities
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-function escapeHtml(text) {
-    if (!text) return text;
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+function renderHeader() {
+    const el = document.getElementById('header');
+    el.innerHTML = `
+    <div class="header-name">${cvJson.name}</div>
+    <div class="header-title">${cvJson.title}</div>
+    <div class="header-links">
+    <a href="${cvJson.contact.linkedin}" target="_blank" rel="noopener">linkedin.com/in/smartev</a>
+    <span class="sep">—</span>
+    <a href="${cvJson.contact.team}" target="_blank" rel="noopener">identrics.ai/team</a>
+    <span class="sep">—</span>
+    <a href="${cvJson.contact.github}" target="_blank" rel="noopener">github.com/simeonmartev</a>
+    </div>
+  `;
 }
 
-function linkify(text) {
-    const urlRegex = /(https?:\/\/[^\s"]+)/g;
-    return text.replace(urlRegex, (url) => {
-        let cleanUrl = url;
-        let suffix = "";
-        if (url.endsWith('"') || url.endsWith("'")) {
-            cleanUrl = url.slice(0, -1);
-            suffix = url.slice(-1);
+// cvJson.bio is a compile-time constant - innerHTML is safe here.
+function renderBio() {
+    const el = document.getElementById('bio');
+    el.innerHTML = `
+    <div class="section-key"><span class="slash">//</span> bio</div>
+    <div class="bio">${cvJson.bio}</div>
+  `;
+}
+
+// cvJson is a compile-time constant - innerHTML interpolation is safe here.
+// If this ever sources from external input, escape all interpolated fields.
+function renderJob(job) {
+    const highlightsHtml = job.highlights
+        ? `<ul class="job-highlights">${job.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`
+        : `<p class="job-description">${job.description}</p>`;
+
+    return `
+    <div class="job">
+      <div>
+        <span class="job-role">${job.role}</span>
+        <span class="job-company"> - <a href="${job.link}" target="_blank" rel="noopener">${job.company}</a></span>
+      </div>
+      <div class="job-meta">${job.period} · ${job.location}</div>
+      ${highlightsHtml}
+    </div>
+  `;
+}
+
+function renderSkills() {
+    const main = document.getElementById('main');
+    const section = document.createElement('div');
+    section.className = 'section';
+    const rows = Object.entries(cvJson.skills).map(([category, items]) =>
+        `<div class="skill-row">
+            <span class="skill-category">${category}:</span>
+            <span class="skill-items">${items.join(', ')}</span>
+        </div>`
+    ).join('');
+    section.innerHTML = `
+    <div class="section-key"><span class="slash">//</span> skills</div>
+    <div class="skill-grid">${rows}</div>
+  `;
+    main.appendChild(section);
+}
+
+function renderLanguages() {
+    const main = document.getElementById('main');
+    const section = document.createElement('div');
+    section.className = 'section';
+    const items = cvJson.languages.map(l =>
+        `<span class="lang-item"><span class="lang-name">${l.lang}</span> <span class="lang-level">(${l.level})</span></span>`
+    ).join('<span class="sep">·</span>');
+    section.innerHTML = `
+    <div class="section-key"><span class="slash">//</span> languages</div>
+    <div class="lang-list">${items}</div>
+  `;
+    main.appendChild(section);
+}
+
+function renderExperience() {
+    const main = document.getElementById('main');
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.innerHTML = `
+    <div class="section-key"><span class="slash">//</span> experience</div>
+    ${cvJson.experience.map(renderJob).join('')}
+  `;
+    main.appendChild(section);
+}
+
+function renderFooter() {
+    const el = document.getElementById('footer');
+    const year = new Date().getFullYear();
+    el.innerHTML = `
+    <span>${cvJson.name} - ${year}</span>
+    <span>// generated by Sauron</span>
+  `;
+}
+
+// ── Feonor Easter Egg ─────────────────────────────────────────────────────────
+
+(function initFeonor() {
+    const sequence = 'feonor';
+    let buffer = '';
+    const toast = document.getElementById('feonor-toast');
+    let hideTimer = null;
+
+    document.addEventListener('keydown', (e) => {
+        // Ignore modifier keys and non-printable keys
+        if (e.key.length !== 1) { buffer = ''; return; }
+
+        buffer += e.key.toLowerCase();
+        if (buffer.length > sequence.length) {
+            buffer = buffer.slice(-sequence.length);
         }
-        return `<a href="${cleanUrl}" target="_blank">${cleanUrl}</a>${suffix}`;
+
+        if (buffer === sequence) {
+            buffer = '';
+            toast.textContent = 'Fëonor did nothing wrong.';
+            toast.classList.add('visible');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
     });
-}
+})();
 
-function highlightJson(json) {
-    if (typeof json !== 'string') {
-        json = JSON.stringify(json, null, 2);
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+renderHeader();
+renderBio();
+renderSkills();
+renderExperience();
+renderLanguages();
+renderFooter();
+
+// ── Animations ───────────────────────────────────────────────────────────────
+// Runs after all render calls so the DOM is fully populated.
+
+// Section headers: cycle through comment/operator syntax from different languages
+(function initSlashAnimation() {
+    const frames = ['//', '##', '--', '::', '>>', '/*'];
+    let idx = 0;
+
+    function tick() {
+        idx = (idx + 1) % frames.length;
+        document.querySelectorAll('.slash').forEach(el => {
+            el.classList.add('slash--out');
+            setTimeout(() => {
+                el.textContent = frames[idx];
+                el.classList.remove('slash--out');
+            }, 60);
+        });
     }
 
-    // First escape HTML entities in the raw JSON string
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        let cls = 'json-number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'json-key';
-                return `<span class="${cls}">${match.slice(0, -1)}</span><span class="json-bracket">:</span>`;
-            } else {
-                cls = 'json-string';
-                if (match.match(/^"https?:/)) {
-                    const url = match.slice(1, -1);
-                    return `"<a href="${url}" target="_blank" class="json-string">${url}</a>"`;
-                }
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'json-boolean';
-        } else if (/null/.test(match)) {
-            cls = 'json-null';
-        }
-        return `<span class="${cls}">${match}</span>`;
-    });
-}
-
-function printLine(content, type = 'text') {
-    if (content === "") return;
-    const line = document.createElement('div');
-
-    if (type === 'command') {
-        line.innerHTML = `<span style="color: #ff0099; margin-right: 10px;">${promptSpan.innerText}</span>${escapeHtml(content)}`;
-    } else if (type === 'html') {
-        line.innerHTML = content;
-    } else {
-        let processedText = escapeHtml(content);
-        processedText = linkify(processedText);
-        line.innerHTML = processedText;
-    }
-
-    outputDiv.appendChild(line);
-    terminal.scrollTop = terminal.scrollHeight;
-}
-
-async function typeText(text, element, speed = 50) {
-    for (let char of text) {
-        element.textContent += char;
-        if (Math.random() > 0.95) await sleep(150);
-        await sleep(speed);
-    }
-}
-
-// Optimized LLM-style typing function
-async function typeHtml(element, html, speed = 1) {
-    // Regex to split into: 
-    // 1. HTML Tags (<...>)
-    // 2. HTML Entities (&...;)
-    // 3. Regular text content
-    const regex = /(<[^>]*>)|(&[^;]+;)|([^<&]+)/g;
-    let match;
-    let buffer = ""; // Build the HTML string incrementally
-    let parts = [];
-
-    // Pre-parse the HTML into a linear sequence of atomic parts
-    while ((match = regex.exec(html)) !== null) {
-        if (match[1]) {
-            // Tag (e.g., <span class="json-key">)
-            parts.push({ text: match[1], isTag: true });
-        } else if (match[2]) {
-            // Entity (e.g., &quot;)
-            parts.push({ text: match[2], isTag: false });
-        } else if (match[3]) {
-            // Text content - split into chars for typing effect
-            const text = match[3];
-            for (let char of text) {
-                parts.push({ text: char, isTag: false });
-            }
-        }
-    }
-
-    // Stream the parts
-    for (let i = 0; i < parts.length; i++) {
-        buffer += parts[i].text;
-
-        // Only update DOM and pause if it's visible text (not a tag)
-        // OR if it's the very last part (to ensure closure)
-        if (!parts[i].isTag || i === parts.length - 1) {
-
-            // Batching: Update DOM every N chars for performance in turbo mode
-            // or every char if normal speed
-            const isBatchUpdate = (i % 3 === 0) || (i === parts.length - 1);
-
-            if (isBatchUpdate) {
-                element.innerHTML = buffer;
-                terminal.scrollTop = terminal.scrollHeight;
-
-                // Speed control
-                if (speed > 0) {
-                    let delay = speed;
-                    if (Math.random() > 0.99) delay += 30; // Occasional stutter
-                    await sleep(delay);
-                } else {
-                    // Turbo mode: minimal yield to prevent UI freeze
-                    if (i % 20 === 0) await sleep(0);
-                }
-            }
-        }
-    }
-    // Final ensure
-    element.innerHTML = buffer;
-    terminal.scrollTop = terminal.scrollHeight;
-}
-
-// Ghost / Remote Viewer Logic
-let ghostCursor;
-
-function initGhostCursor() {
-    ghostCursor = document.createElement('div');
-    ghostCursor.id = 'ghost-cursor';
-    document.body.appendChild(ghostCursor);
-
-    // Start very soon after load (2 seconds)
-    setTimeout(ghostSelectionLoop, 2000);
-
-    // Ghost typing after 10-12 seconds
-    setTimeout(ghostTypingLoop, 12000);
-}
-
-function ghostSelectionLoop() {
-    // Very frequent interruptions: every 2s to 7s
-    const delay = Math.random() * 5000 + 2000;
-    setTimeout(async () => {
-        await performGhostSelect();
-        ghostSelectionLoop();
-    }, delay);
-}
-
-async function performGhostSelect() {
-    // Only target visible text parts (JSON colored elements)
-    const targets = outputDiv.querySelectorAll('.json-key, .json-string, .json-number, .json-boolean');
-    if (targets.length === 0) return;
-
-    // Pick a random start
-    const startIndex = Math.floor(Math.random() * targets.length);
-    // Selection length (1-4 items)
-    const length = Math.floor(Math.random() * 4) + 1;
-
-    const selectedNodes = [];
-
-    // Move cursor to start position first
-    const startRect = targets[startIndex].getBoundingClientRect();
-    if (startRect.top === 0 && startRect.bottom === 0) return; // Element hidden/scrolled away
-
-    ghostCursor.style.left = (startRect.left - 5) + 'px';
-    ghostCursor.style.top = (startRect.top + startRect.height / 2 - 8) + 'px'; // Center vertically
-    ghostCursor.style.display = 'block';
-
-    await sleep(300); // Wait for cursor to arrive
-
-    // Simulate dragging selection
-    for (let i = 0; i < length; i++) {
-        if (startIndex + i < targets.length) {
-            const el = targets[startIndex + i];
-            const rect = el.getBoundingClientRect();
-
-            // Check if visible in viewport (rough check)
-            if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-                el.classList.add('ghost-selected');
-                selectedNodes.push(el);
-
-                // Move cursor along
-                ghostCursor.style.left = (rect.right) + 'px';
-                ghostCursor.style.top = (rect.top + rect.height / 2 - 8) + 'px';
-
-                // Random drag speed
-                await sleep(Math.random() * 150 + 50);
-            }
-        }
-    }
-
-    // Hold selection (reading...)
-    await sleep(Math.random() * 1500 + 1000);
-
-    // Deselect
-    selectedNodes.forEach(el => el.classList.remove('ghost-selected'));
-    ghostCursor.style.display = 'none';
-}
-
-async function ghostTypingLoop() {
-    // Only type if input is empty and not angry mode (idle)
-    if (commandInput.value === '' && !document.body.classList.contains('angry-mode')) {
-        await performGhostTyping();
-    }
-    // Repeat rarely (30s - 60s)
-    setTimeout(ghostTypingLoop, Math.random() * 30000 + 30000);
-}
-
-async function performGhostTyping() {
-    const phrases = ["who is this?", "help!", "is anyone there?", "stop watching", "system_reset"];
-    const text = phrases[Math.floor(Math.random() * phrases.length)];
-
-    // Simulate typing
-    for (let char of text) {
-        // If user interrupts (starts typing), abort immediately
-        if (commandInput.value !== text.substring(0, commandInput.value.length)) {
-            return;
-        }
-
-        commandInput.value += char;
-        updateCursor();
-
-        // Random typing speed with hesitations
-        await sleep(Math.random() * 150 + 50);
-    }
-
-    await sleep(1000); // Hesitate after finishing
-
-    // Delete quickly
-    while (commandInput.value.length > 0) {
-        // If user interrupts, abort
-        if (!text.startsWith(commandInput.value)) {
-            return;
-        }
-
-        commandInput.value = commandInput.value.slice(0, -1);
-        updateCursor();
-        await sleep(50); // Fast delete
-    }
-}
-
-async function typeCommand(text) {
-    commandInput.value = "";
-    for (let char of text) {
-        commandInput.value += char;
-        updateCursor();
-        if (Math.random() > 0.9) await sleep(100);
-        await sleep(30 + Math.random() * 50);
-    }
-    await sleep(200);
-    const val = commandInput.value;
-    commandInput.value = "";
-    updateCursor();
-
-    // Special handling for the boot sequence cv.json
-    if (val === "cat cv.json") {
-        printLine(val, 'command');
-        // Manually trigger the typing effect for this specific boot command
-        const content = highlightJson(fileSystem["cv.json"]);
-        const line = document.createElement('div');
-        outputDiv.appendChild(line);
-
-        // Disable input while typing output
-        commandInput.disabled = true;
-
-        // Turbo speed: 0ms base delay, token batching handles the rest
-        await typeHtml(line, content, 0);
-
-        commandInput.disabled = false;
-        commandInput.focus();
-    } else {
-        processCommand(val, true);
-    }
-}
-
-function processCommand(input, automated = false) {
-    const trimmedInput = input.trim();
-    if (!trimmedInput) return;
-
-    if (!automated) {
-        printLine(trimmedInput, 'command');
-        commandHistory.push(trimmedInput);
-        historyIndex = commandHistory.length;
-    }
-
-    const args = trimmedInput.split(' ');
-    const cmd = args[0].toLowerCase();
-
-    if (cmd === 'cat') {
-        const file = args[1];
-        if (file && fileSystem[file]) {
-            if (file.endsWith('.json')) {
-                printLine(highlightJson(fileSystem[file]), 'html');
-            } else {
-                printLine(fileSystem[file], 'text');
-            }
-        } else if (file) {
-            printLine(`cat: ${file}: No such file or directory`, 'text');
-        } else {
-            printLine("usage: cat [file]", 'text');
-        }
-    } else if (commands[cmd]) {
-        const result = commands[cmd]();
-        if (cmd === 'cv') {
-            printLine(result, 'html');
-        } else {
-            printLine(result, 'text');
-        }
-    } else {
-        printLine(`command not found: ${cmd}`, 'text');
-    }
-}
-
-async function bootSequence() {
-    commandInput.disabled = true;
-    inputLine.style.display = 'none';
-
-    // 1. Initial wait
-    const tempCursorLine = document.createElement('div');
-    tempCursorLine.innerHTML = '<span class="blinking-cursor" style="position:relative; display:inline-block;"></span>';
-    outputDiv.appendChild(tempCursorLine);
-
-    await sleep(CONFIG.bootPause);
-
-    outputDiv.removeChild(tempCursorLine);
-
-    // 2. Welcome message
-    const welcomeMsg = [
-        "Welcome ...",
-        "Type 'help' for available commands."
-    ];
-
-    for (const msg of welcomeMsg) {
-        const line = document.createElement('div');
-        outputDiv.appendChild(line);
-        await typeText(msg, line, 30);
-        await sleep(300);
-    }
-
-    await sleep(1000);
-
-    // 3. Reveal Prompt & Input
-    inputLine.style.display = 'flex';
-
-    // 4. Simulate user typing 'cat cv.json'
-    await typeCommand("cat cv.json");
-
-    // 5. Enable input (handled inside typeCommand)
-    if (!commandInput.disabled) {
-        commandInput.focus();
-    }
-}
-
-// Input Handling
-commandInput.addEventListener('keydown', (e) => {
-    resetIdleTimer(); // Activity detected
-
-    if (e.key === 'Enter') {
-        const cmd = commandInput.value;
-        commandInput.value = '';
-        updateCursor();
-        processCommand(cmd);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (historyIndex > 0) {
-            historyIndex--;
-            commandInput.value = commandHistory[historyIndex];
-            updateCursor();
-        }
-    } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (historyIndex < commandHistory.length - 1) {
-            historyIndex++;
-            commandInput.value = commandHistory[historyIndex];
-            updateCursor();
-        } else {
-            historyIndex = commandHistory.length;
-            commandInput.value = '';
-            updateCursor();
-        }
-    }
-});
-
-commandInput.addEventListener('input', () => {
-    updateCursor();
-    resetIdleTimer();
-});
-
-function updateCursor() {
-    const textLength = commandInput.value.length;
-    cursor.style.transform = `translateX(${textLength}ch)`;
-}
-
-// Keep focus and track idle
-document.addEventListener('click', (e) => {
-    resetIdleTimer();
-    if (e.target.tagName === 'A') return;
-    if (window.getSelection().toString() === '') {
-        commandInput.focus();
-    }
-});
-
-document.addEventListener('mousemove', resetIdleTimer);
-
-// Idle Timer Logic
-let idleTimer;
-const IDLE_TIMEOUT = 10000; // 10 seconds
-
-function resetIdleTimer() {
-    document.body.classList.remove('angry-mode');
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-        document.body.classList.add('angry-mode');
-    }, IDLE_TIMEOUT);
-}
-
-// Start
-window.onload = () => {
-    bootSequence();
-    initGhostCursor(); // Initialize the ghost
-    resetIdleTimer();
-};
+    setInterval(tick, 700);
+})();
+
+// Name prefix: cycling terminal prompt glyph in pink
+(function initNamePrefix() {
+    const frames = ['$', '>', '~', '#', '_', '/'];
+    let idx = 0;
+
+    const prefix = document.createElement('span');
+    prefix.className = 'name-prefix';
+    prefix.setAttribute('aria-hidden', 'true');
+    prefix.textContent = frames[0];
+
+    const nameEl = document.querySelector('.header-name');
+    nameEl.prepend(prefix);
+
+    setInterval(() => {
+        prefix.classList.add('name-prefix--out');
+        setTimeout(() => {
+            idx = (idx + 1) % frames.length;
+            prefix.textContent = frames[idx];
+            prefix.classList.remove('name-prefix--out');
+        }, 60);
+    }, 600);
+})();
