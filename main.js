@@ -1,7 +1,7 @@
 // ── CV Data ──────────────────────────────────────────────────────────────────
 const cvJson = {
     "name": "Simeon Martev",
-    "title": "Simeon Martev is a CTO @ Identrics, Technical Architect, and Data & AI Systems Engineer.",
+    "title": "CTO of Identrics, Technical Architect and last but not least Data & AI Systems Engineer",
     "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer - taking millions of documents a day from unstructured sources and turning them into something clean and searchable. I have built multilingual NLP pipelines, and I spend most of my time on the validation layer between models and storage - making sure raw entity output is confidence-scored before it reaches anything downstream.</p><p>I work with LLMs to build enrichment agents - multi-provider model layers for classification, summarisation, and entity resolution at scale. I do my best work in the code, not just the diagram.</p>",
     "greatestHits": [
         "The ingestion pipeline I built now processes 20M+ documents a month across 370,000+ outlets. It started as a Bulgarian news crawler. Every scaling step meant replacing something - cron jobs became RabbitMQ, RabbitMQ became Kafka. I made those calls and did the building.",
@@ -50,7 +50,7 @@ const cvJson = {
             "company": "Identrics",
             "link": "https://identrics.ai/",
             "role": "Chief Technology Officer",
-            "context": "Identrics is the technology arm of the UpDataOne media intelligence group. Promoted from VP of Engineering to CTO to lead the company's AI product strategy.",
+            "context": "Sofia-based AI company building media intelligence products - narrative tracking, disinformation detection, journalist intelligence, and media monitoring. Stepped into the CTO role following a leadership transition, after three years as VP of Engineering building the core technology stack.",
             "period": "Sep 2025 – Present",
             "location": "Sofia, Bulgaria",
             "highlights": [
@@ -66,7 +66,7 @@ const cvJson = {
             "link": "https://updata.one/",
             "role": "VP of Engineering",
             "company_display": "UpDataOne",
-            "context": "UpDataOne is the parent media intelligence group; Identrics is the technology company where the engineering work happens. Same team, continuous trajectory from A Data Pro.",
+            "context": "A group of four business intelligence companies - A Data Pro, Identrics, Perceptica, and Seenews - operating under one umbrella. Grew into the role from A Data Pro, reporting directly to the CTO.",
             "period": "Jan 2022 – Sep 2025",
             "location": "Sofia, Bulgaria",
             "highlights": [
@@ -82,9 +82,9 @@ const cvJson = {
         {
             "company": "A Data Pro",
             "link": "https://adata.pro/",
-            "role": "Senior Software Developer & Lead Architect",
+            "role": "Lead Architect",
             "company_display": "A Data Pro",
-            "context": "Joined as a mid-level developer and grew into the Lead Architect role over ten years. A Data Pro evolved into UpDataOne and then Identrics - same team, continuous trajectory.",
+            "context": "Sofia-based company specialising in media monitoring and risk intelligence. Joined as a mid-level developer and grew into the Lead Architect role.",
             "period": "Apr 2012 – Jan 2022",
             "location": "Sofia, Bulgaria",
             "highlights": [
@@ -93,6 +93,11 @@ const cvJson = {
                 "Built Perceptica, a Media Intelligence Platform for ingesting, enriching, and serving online news, social media, and broadcast content. The architecture - RabbitMQ, Celery, and Elasticsearch - became the foundation that eventually scaled into today's 20M docs/month pipeline.",
             ]
         }
+    ],
+    "openTo": [
+        "I want to be in the architecture and the code, not just the meeting about it. Roles that fit: Principal or Staff Engineer, VP of Engineering - in teams building search infrastructure, data enrichment at scale, or applied NLP and AI in production.",
+        "I write most of my code through LLM coding agents now - Claude Code, Cursor - and the workflow interests me as much as the systems I build through it.",
+        "Remote or hybrid. Based in Sofia, Bulgaria."
     ]
 };
 
@@ -185,6 +190,18 @@ function renderExperience() {
     main.appendChild(section);
 }
 
+function renderOpenTo() {
+    const main = document.getElementById('main');
+    const section = document.createElement('div');
+    section.className = 'section';
+    const html = cvJson.openTo.map(p => `<p>${p}</p>`).join('');
+    section.innerHTML = `
+    <div class="section-key"><span class="slash">//</span> open to</div>
+    <div class="open-to">${html}</div>
+  `;
+    main.appendChild(section);
+}
+
 function renderFooter() {
     const el = document.getElementById('footer');
     const year = new Date().getFullYear();
@@ -225,6 +242,7 @@ renderBio();
 renderTldr();
 renderSkills();
 renderExperience();
+renderOpenTo();
 renderFooter();
 
 // ── Animations ───────────────────────────────────────────────────────────────

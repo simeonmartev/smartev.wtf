@@ -98,6 +98,24 @@ body {
 .bio p { margin: 0; }
 .bio p + p { margin-top: 1em; }
 
+/* ── Open To ── */
+.open-to {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #586e75;
+  padding-left: 20px;
+  border-left: 2px solid #eee8d5;
+  transition: border-color 0.2s;
+}
+
+.open-to:hover {
+  border-left-color: #FA369A;
+}
+
+/* Open To paragraph spacing */
+.open-to p { margin: 0; }
+.open-to p + p { margin-top: 1em; }
+
 
 /* ── Section ── */
 .section {
@@ -252,7 +270,8 @@ body {
 /* ── Inline links (within highlights, bio, descriptions) ── */
 .job-highlights li a,
 .job-description a,
-.bio a {
+.bio a,
+.open-to a {
   color: inherit;
   text-decoration: none;
   border-bottom: 1px dotted rgba(101, 123, 131, 0.5);
@@ -261,7 +280,8 @@ body {
 
 .job-highlights li a:hover,
 .job-description a:hover,
-.bio a:hover {
+.bio a:hover,
+.open-to a:hover {
   color: #FA369A;
   border-bottom-color: rgba(250, 54, 154, 0.5);
 }
