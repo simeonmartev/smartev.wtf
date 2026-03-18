@@ -51,7 +51,7 @@ const cvJson = {
             "link": "https://identrics.ai/",
             "role": "Chief Technology Officer",
             "context": "Sofia-based AI company building media intelligence products - narrative tracking, disinformation detection, journalist intelligence, and media monitoring. Stepped into the CTO role following a leadership transition, after three years as VP of Engineering building the core technology stack.",
-            "period": "Sep 2025 – Present",
+            "period": "Sep 2025 - Present",
             "location": "Sofia, Bulgaria",
             "highlights": [
                 "Leading development of PINGRID - a journalist intelligence platform that scans thousands of publications daily, discovers newly active authors, and keeps journalist profiles current with topics and regional coverage. PR software providers use the API to replace manual media database maintenance.",
@@ -67,10 +67,10 @@ const cvJson = {
             "role": "VP of Engineering",
             "company_display": "UpDataOne",
             "context": "A group of four business intelligence companies - A Data Pro, Identrics, Perceptica, and Seenews - operating under one umbrella. Grew into the role from A Data Pro, reporting directly to the CTO.",
-            "period": "Jan 2022 – Sep 2025",
+            "period": "Jan 2022 - Sep 2025",
             "location": "Sofia, Bulgaria",
             "highlights": [
-                "Led a team of 5–10 engineers and personally built the core ingestion pipeline: orchestrated crawling via Scrapy and RabbitMQ across 370,000+ media outlets, producing over 20 million documents per month from print, broadcast, and social sources - processed through Kafka, Logstash, and Docker, indexed in Elasticsearch. Grew the catalogue from a Bulgaria-only operation at ~5M docs/month to a global footprint over 10 years.",
+                "Led a team of 5-10 engineers and personally built the core ingestion pipeline: orchestrated crawling via Scrapy and RabbitMQ across 370,000+ media outlets, producing over 20 million documents per month from print, broadcast, and social sources - processed through Kafka, Logstash, and Docker, indexed in Elasticsearch. Grew the catalogue from a Bulgaria-only operation at ~5M docs/month to a global footprint over 10 years.",
                 "For RDC (risk intelligence), orchestrated ingestion of thousands of sanctions lists via Scrapy and Airflow and designed the data model for sanction entities - enabling structured, queryable watchlist data at scale.",
                 "Built OSINT tools for corporate due diligence and adverse media screening using Python, Scrapy, and Google APIs - generating risk profiles from public sources automatically. Reduced manual analyst research time by approximately 70% per investigation.",
                 "Introduced a human-in-the-loop validation dataflow: analysts review and correct NLP enrichment output directly in Google Sheets, with automated sync back into the pipeline.",
@@ -85,7 +85,7 @@ const cvJson = {
             "role": "Lead Architect",
             "company_display": "A Data Pro",
             "context": "Sofia-based company specialising in media monitoring and risk intelligence. Joined as a mid-level developer and grew into the Lead Architect role.",
-            "period": "Apr 2012 – Jan 2022",
+            "period": "Apr 2012 - Jan 2022",
             "location": "Sofia, Bulgaria",
             "highlights": [
                 "Introduced Elasticsearch to the company holding and Apache Airflow for pipeline orchestration - replacing ad-hoc cron-based scheduling with proper DAG-based workflows across the entire data platform.",
@@ -101,12 +101,75 @@ const cvJson = {
     ]
 };
 
+// ── SEO Init ───────────────────────────────────────────────────────────────────
+function stripHtmlToText(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return (tmp.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
+function truncateText(text, maxLen) {
+    if (text.length <= maxLen) return text;
+    const trimmed = text.slice(0, maxLen).trimEnd();
+    return `${trimmed}…`;
+}
+
+function initSeo() {
+    const name = cvJson.name;
+    const canonicalBase = cvJson.contact?.website || `${window.location.origin}${window.location.pathname}`;
+    const canonicalUrl = canonicalBase.endsWith('/') ? canonicalBase : `${canonicalBase}/`;
+
+    const seoTitle = `${name} — CTO of Identrics`;
+    const bioText = stripHtmlToText(cvJson.bio);
+    const seoDescription = truncateText(`CTO of Identrics. ${bioText}`, 155);
+
+    document.title = seoTitle;
+
+    const setMetaName = (metaName, content) => {
+        const el = document.querySelector(`meta[name="${metaName}"]`);
+        if (el) el.setAttribute('content', content);
+    };
+
+    const setMetaProperty = (metaProp, content) => {
+        const el = document.querySelector(`meta[property="${metaProp}"]`);
+        if (el) el.setAttribute('content', content);
+    };
+
+    const canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (canonicalEl) canonicalEl.setAttribute('href', canonicalUrl);
+
+    setMetaName('description', seoDescription);
+
+    setMetaProperty('og:title', seoTitle);
+    setMetaProperty('og:description', seoDescription);
+    setMetaProperty('og:url', canonicalUrl);
+
+    setMetaName('twitter:title', seoTitle);
+    setMetaName('twitter:description', seoDescription);
+    setMetaName('twitter:url', canonicalUrl);
+
+    // Best-effort keywords from the current cvJson skills (non-critical, SEO depends mostly on content).
+    const allSkills = Object.values(cvJson.skills).flat();
+    const keywords = Array.from(
+        new Set([
+            'CTO',
+            'Identrics',
+            'Technical Architect',
+            'Data & AI Systems Engineer',
+            'media intelligence',
+            'risk intelligence',
+            ...allSkills
+        ])
+    ).slice(0, 28);
+    setMetaName('keywords', keywords.join(', '));
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function renderHeader() {
     const el = document.getElementById('header');
     el.innerHTML = `
-    <div class="header-name">${cvJson.name}</div>
+    <h1 class="header-name">${cvJson.name}</h1>
     <div class="header-title">${cvJson.title}</div>
     <div class="header-links">
     <a href="${cvJson.contact.linkedin}" target="_blank" rel="noopener">linkedin.com/in/smartev</a>
@@ -121,21 +184,27 @@ function renderHeader() {
 // cvJson.bio is a compile-time constant - innerHTML is safe here.
 function renderBio() {
     const el = document.getElementById('bio');
+    const headingId = 'bio-heading';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-labelledby', headingId);
     el.innerHTML = `
-    <div class="section-key"><span class="slash">//</span> bio</div>
+    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> bio</h2>
     <div class="bio">${cvJson.bio}</div>
   `;
 }
 
 function renderTldr() {
     const main = document.getElementById('main');
-    const section = document.createElement('div');
+    const section = document.createElement('section');
     section.className = 'section';
+    const headingId = 'tldr-heading';
+    section.setAttribute('role', 'region');
+    section.setAttribute('aria-labelledby', headingId);
 
     // Paragraph spacing is handled via CSS (`.tldr p + p`), not `<br>`.
     const hitsHtml = cvJson.greatestHits.map(h => `<p>${h}</p>`).join('');
     section.innerHTML = `
-    <div class="section-key"><span class="slash">//</span> tldr</div>
+    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> tldr</h2>
     <div class="tldr">${hitsHtml}</div>
   `;
 
@@ -164,8 +233,11 @@ function renderJob(job) {
 
 function renderSkills() {
     const main = document.getElementById('main');
-    const section = document.createElement('div');
+    const section = document.createElement('section');
     section.className = 'section';
+    const headingId = 'skills-heading';
+    section.setAttribute('role', 'region');
+    section.setAttribute('aria-labelledby', headingId);
     const rows = Object.entries(cvJson.skills).map(([category, items]) =>
         `<div class="skill-row">
             <span class="skill-category">${category}</span>
@@ -173,7 +245,7 @@ function renderSkills() {
         </div>`
     ).join('');
     section.innerHTML = `
-    <div class="section-key"><span class="slash">//</span> skills</div>
+    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> skills</h2>
     <div class="skill-grid">${rows}</div>
   `;
     main.appendChild(section);
@@ -181,10 +253,13 @@ function renderSkills() {
 
 function renderExperience() {
     const main = document.getElementById('main');
-    const section = document.createElement('div');
+    const section = document.createElement('section');
     section.className = 'section';
+    const headingId = 'experience-heading';
+    section.setAttribute('role', 'region');
+    section.setAttribute('aria-labelledby', headingId);
     section.innerHTML = `
-    <div class="section-key"><span class="slash">//</span> experience</div>
+    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> experience</h2>
     ${cvJson.experience.map(renderJob).join('')}
   `;
     main.appendChild(section);
@@ -192,11 +267,14 @@ function renderExperience() {
 
 function renderOpenTo() {
     const main = document.getElementById('main');
-    const section = document.createElement('div');
+    const section = document.createElement('section');
     section.className = 'section';
+    const headingId = 'open-to-heading';
+    section.setAttribute('role', 'region');
+    section.setAttribute('aria-labelledby', headingId);
     const html = cvJson.openTo.map(p => `<p>${p}</p>`).join('');
     section.innerHTML = `
-    <div class="section-key"><span class="slash">//</span> open to</div>
+    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> open to</h2>
     <div class="open-to">${html}</div>
   `;
     main.appendChild(section);
@@ -237,6 +315,7 @@ function renderFooter() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
+initSeo();
 renderHeader();
 renderBio();
 renderTldr();
