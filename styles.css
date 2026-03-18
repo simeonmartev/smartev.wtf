@@ -13,7 +13,7 @@
 
 body {
   background: #fdf6e3;
-  color: #657b83;
+  color: #586e75;
   font-family: 'Courier New', Courier, monospace;
   font-size: 18px;
   line-height: 1.8;
@@ -56,7 +56,7 @@ body {
 
 .header-title {
   font-size: 17px;
-  color: #93a1a1;
+  color: #586e75;
   margin-bottom: 20px;
 }
 
@@ -76,7 +76,7 @@ body {
 }
 
 .header-links .sep {
-  color: #93a1a1;
+  color: #586e75;
   margin: 0 10px;
 }
 
@@ -105,9 +105,9 @@ body {
 }
 
 .section-key {
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  color: #93a1a1;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: #586e75;
   margin-bottom: 28px;
   display: flex;
   align-items: center;
@@ -162,10 +162,11 @@ body {
 }
 
 .job-meta {
-  font-size: 13px;
-  color: #93a1a1;
+  font-size: 15px;
+  color: #586e75;
   margin-top: 3px;
   margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .job-description {
@@ -219,41 +220,34 @@ body {
 }
 
 .skill-category {
-  color: #93a1a1;
-  font-size: 13px;
-  letter-spacing: 0.03em;
+  color: #586e75;
+  font-size: 15px;
+  letter-spacing: 0.02em;
   display: block;
   margin-bottom: 2px;
+  font-weight: 600;
 }
 
 .skill-items {
   color: #586e75;
 }
 
-/* ── Languages ── */
-.lang-list {
-  padding-left: 20px;
-  font-size: 15px;
+/* ── tldr ── */
+.tldr {
+  font-size: 17px;
+  line-height: 1.9;
   color: #586e75;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  padding-left: 20px;
+  border-left: 2px solid #eee8d5;
+  transition: border-color 0.2s;
 }
 
-.lang-list .sep {
-  color: #93a1a1;
+.tldr:hover {
+  border-left-color: #FA369A;
 }
 
-.lang-name {
-  color: #073642;
-  font-weight: bold;
-}
-
-.lang-level {
-  color: #93a1a1;
-  font-size: 13px;
-}
+.tldr p { margin: 0; }
+.tldr p + p { margin-top: 1em; }
 
 /* ── Inline links (within highlights, bio, descriptions) ── */
 .job-highlights li a,
@@ -278,7 +272,7 @@ body {
   padding-top: 20px;
   border-top: 1px solid #eee8d5;
   font-size: 13px;
-  color: #93a1a1;
+  color: #586e75;
   display: flex;
   justify-content: space-between;
 }
