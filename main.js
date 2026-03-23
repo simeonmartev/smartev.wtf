@@ -309,8 +309,9 @@ renderFooter();
 // ── Unified glyph animation ───────────────────────────────────────────────────
 // One tick drives name prefix, section slashes, and theme toggle in lockstep.
 (function initGlyphAnimation() {
-    const frames       = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
-    const toggleFrames = ['🌝', '🌛', '🌑', '🌚', '⭐️', '🔥', '🌈', '✨', '☀️', '🌩️', '❄️'];
+    const frames            = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
+    const toggleDarkEmojis  = ['⭐️', '🔥', '🌈', '☀️', '🌤️'];
+    const toggleLightEmojis = ['🌛', '🌑', '🌚', '❄️'];
     let idx = 0;
 
     // ── Name prefix ──
@@ -330,7 +331,9 @@ renderFooter();
 
     function updateToggle() {
         const theme = currentTheme();
-        btn.textContent = `${toggleFrames[idx % toggleFrames.length]} ${theme}`;
+        const emojis = theme === 'dark' ? toggleDarkEmojis : toggleLightEmojis;
+        const label  = theme === 'dark' ? 'dawn' : 'dusk';
+        btn.textContent = `${emojis[idx % emojis.length]} ${label}`;
         btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
 
