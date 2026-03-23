@@ -119,7 +119,7 @@ function initSeo() {
     const canonicalBase = cvJson.contact?.website || `${window.location.origin}${window.location.pathname}`;
     const canonicalUrl = canonicalBase.endsWith('/') ? canonicalBase : `${canonicalBase}/`;
 
-    const seoTitle = `${name} — CTO of Identrics`;
+    const seoTitle = `${name} of CTO of Identrics`;
     const bioText = stripHtmlToText(cvJson.bio);
     const seoDescription = truncateText(`CTO of Identrics. ${bioText}`, 155);
 
@@ -166,10 +166,22 @@ function initSeo() {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
+function makeSection(headingId) {
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.setAttribute('role', 'region');
+    section.setAttribute('aria-labelledby', headingId);
+    document.getElementById('main').appendChild(section);
+    return section;
+}
+
 function renderHeader() {
     const el = document.getElementById('header');
     el.innerHTML = `
-    <h1 class="header-name">${cvJson.name}</h1>
+    <div class="header-top">
+      <h1 class="header-name">${cvJson.name}</h1>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+    </div>
     <div class="header-title">${cvJson.title}</div>
     <div class="header-links">
     <a href="${cvJson.contact.linkedin}" target="_blank" rel="noopener">linkedin.com/in/smartev</a>
@@ -194,30 +206,18 @@ function renderBio() {
 }
 
 function renderTldr() {
-    const main = document.getElementById('main');
-    const section = document.createElement('section');
-    section.className = 'section';
-    const headingId = 'tldr-heading';
-    section.setAttribute('role', 'region');
-    section.setAttribute('aria-labelledby', headingId);
-
-    // Paragraph spacing is handled via CSS (`.tldr p + p`), not `<br>`.
+    const section = makeSection('tldr-heading');
     const hitsHtml = cvJson.greatestHits.map(h => `<p>${h}</p>`).join('');
     section.innerHTML = `
-    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> tldr</h2>
+    <h2 class="section-key" id="tldr-heading"><span class="slash">//</span> tldr</h2>
     <div class="tldr">${hitsHtml}</div>
   `;
-
-    main.appendChild(section);
 }
 
 // cvJson is a compile-time constant - innerHTML interpolation is safe here.
 // If this ever sources from external input, escape all interpolated fields.
 function renderJob(job) {
-    const highlightsHtml = job.highlights
-        ? `<ul class="job-highlights">${job.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`
-        : `<p class="job-description">${job.description}</p>`;
-
+    const highlightsHtml = `<ul class="job-highlights">${job.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
     return `
     <div class="job">
       <div>
@@ -232,12 +232,7 @@ function renderJob(job) {
 }
 
 function renderSkills() {
-    const main = document.getElementById('main');
-    const section = document.createElement('section');
-    section.className = 'section';
-    const headingId = 'skills-heading';
-    section.setAttribute('role', 'region');
-    section.setAttribute('aria-labelledby', headingId);
+    const section = makeSection('skills-heading');
     const rows = Object.entries(cvJson.skills).map(([category, items]) =>
         `<div class="skill-row">
             <span class="skill-category">${category}</span>
@@ -245,39 +240,26 @@ function renderSkills() {
         </div>`
     ).join('');
     section.innerHTML = `
-    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> skills</h2>
+    <h2 class="section-key" id="skills-heading"><span class="slash">//</span> skills</h2>
     <div class="skill-grid">${rows}</div>
   `;
-    main.appendChild(section);
 }
 
 function renderExperience() {
-    const main = document.getElementById('main');
-    const section = document.createElement('section');
-    section.className = 'section';
-    const headingId = 'experience-heading';
-    section.setAttribute('role', 'region');
-    section.setAttribute('aria-labelledby', headingId);
+    const section = makeSection('experience-heading');
     section.innerHTML = `
-    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> experience</h2>
+    <h2 class="section-key" id="experience-heading"><span class="slash">//</span> experience</h2>
     ${cvJson.experience.map(renderJob).join('')}
   `;
-    main.appendChild(section);
 }
 
 function renderOpenTo() {
-    const main = document.getElementById('main');
-    const section = document.createElement('section');
-    section.className = 'section';
-    const headingId = 'open-to-heading';
-    section.setAttribute('role', 'region');
-    section.setAttribute('aria-labelledby', headingId);
+    const section = makeSection('open-to-heading');
     const html = cvJson.openTo.map(p => `<p>${p}</p>`).join('');
     section.innerHTML = `
-    <h2 class="section-key" id="${headingId}"><span class="slash">//</span> open to</h2>
+    <h2 class="section-key" id="open-to-heading"><span class="slash">//</span> open to</h2>
     <div class="open-to">${html}</div>
   `;
-    main.appendChild(section);
 }
 
 function renderFooter() {
@@ -324,47 +306,54 @@ renderExperience();
 renderOpenTo();
 renderFooter();
 
-// ── Animations ───────────────────────────────────────────────────────────────
-// Runs after all render calls so the DOM is fully populated.
-
-// Section headers: cycle through comment/operator syntax from different languages
-(function initSlashAnimation() {
-    const frames = ['//', '##', '--', '::', '>>', '/*'];
+// ── Unified glyph animation ───────────────────────────────────────────────────
+// One tick drives name prefix, section slashes, and theme toggle in lockstep.
+(function initGlyphAnimation() {
+    const frames       = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
+    const toggleFrames = ['🌝', '🌛', '🌑', '🌚', '⭐️', '🔥', '🌈', '✨', '☀️', '🌩️', '❄️'];
     let idx = 0;
 
-    function tick() {
-        idx = (idx + 1) % frames.length;
-        document.querySelectorAll('.slash').forEach(el => {
-            el.classList.add('slash--out');
-            setTimeout(() => {
-                el.textContent = frames[idx];
-                el.classList.remove('slash--out');
-            }, 60);
-        });
-    }
-
-    setInterval(tick, 700);
-})();
-
-// Name prefix: cycling terminal prompt glyph in pink
-(function initNamePrefix() {
-    const frames = ['$', '>', '~', '#', '_', '/'];
-    let idx = 0;
-
+    // ── Name prefix ──
     const prefix = document.createElement('span');
     prefix.className = 'name-prefix';
     prefix.setAttribute('aria-hidden', 'true');
     prefix.textContent = frames[0];
+    document.querySelector('.header-name').prepend(prefix);
 
-    const nameEl = document.querySelector('.header-name');
-    nameEl.prepend(prefix);
+    // ── Toggle ──
+    const btn = document.getElementById('theme-toggle');
 
-    setInterval(() => {
-        prefix.classList.add('name-prefix--out');
-        setTimeout(() => {
-            idx = (idx + 1) % frames.length;
-            prefix.textContent = frames[idx];
-            prefix.classList.remove('name-prefix--out');
-        }, 60);
-    }, 600);
+    function currentTheme() {
+        return localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+
+    function updateToggle() {
+        const theme = currentTheme();
+        btn.textContent = `${toggleFrames[idx % toggleFrames.length]} ${theme}`;
+        btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        updateToggle();
+    }
+
+    btn.addEventListener('click', () => applyTheme(currentTheme() === 'dark' ? 'light' : 'dark'));
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (!localStorage.getItem('theme')) updateToggle();
+    });
+
+    // ── Tick ──
+    function tick() {
+        idx = (idx + 1) % frames.length;
+        prefix.textContent = frames[idx];
+        document.querySelectorAll('.slash').forEach(el => { el.textContent = frames[idx]; });
+        updateToggle();
+    }
+
+    document.querySelectorAll('.slash').forEach(el => { el.textContent = frames[0]; });
+    setInterval(tick, 700);
+    updateToggle();
 })();
