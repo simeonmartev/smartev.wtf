@@ -5,7 +5,7 @@ const cvJson = {
     "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer - taking millions of documents a day from unstructured sources and turning them into something clean and searchable. I have built multilingual NLP pipelines, and I spend most of my time on the validation layer between models and storage - making sure raw entity output is confidence-scored before it reaches anything downstream.</p><p>I work with LLMs to build enrichment agents - multi-provider model layers for classification, summarisation, and entity resolution at scale. I do my best work in the code, not just the diagram.</p>",
     "greatestHits": [
         "The ingestion pipeline I built now processes 20M+ documents a month across 370,000+ outlets. It started as a Bulgarian news crawler. Every scaling step meant replacing something - cron jobs became RabbitMQ, RabbitMQ became Kafka. I made those calls and did the building.",
-        "The enrichment layer runs NER, topic classification, and entity-based sentiment analysis in-stream inside Kafka, before anything hits the index. I own the validation layer between the models and storage - the part that determines whether model output is actually usable. A multi-provider LLM layer now sits on top for the harder classification and summarisation work.",
+        "The enrichment layer runs NER, topic classification, and <a href='https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/' target='_blank' rel='noopener' title='Award-winning Entity-Based Sentiment Analysis'>Entity-Based Sentiment Analysis</a> in-stream inside Kafka, before anything hits the index. I own the validation layer between the models and storage - the part that determines whether model output is actually usable. A multi-provider LLM layer now sits on top for the harder classification and summarisation work.",
         "Specific things that came out of this: press release detection across thousands of ANZ outlets in under a second, which caused a major monitoring provider to replace their previous vendor. Real-time narrative tracking across the 2023 Bulgarian elections. OSINT tooling that cut manual analyst research time by about 70% per investigation."
     ],
     "contact": {
@@ -15,35 +15,34 @@ const cvJson = {
         "github": "https://github.com/simeonmartev"
     },
     "skills": {
-        "Core - daily, production-hardened": [
-            "Kafka",
-            "Elasticsearch (cluster design, query DSL, aggregations at scale)",
+        "Core": [
             "Python",
+            "Elasticsearch",
+            "PostgreSQL",
             "FastAPI",
             "Django & DRF",
-            "PostgreSQL",
-            "Pydantic"
+            "Pydantic",
         ],
         "Orchestration & Streaming": [
             "Prefect",
-            "Apache Airflow",
+            "Airflow",
             "RabbitMQ",
+            "Kafka",
             "Celery",
-            "asyncio",
-            "Logstash"
+            "asyncio"
         ],
+        "Storage": ["PostgreSQL", "Elasticsearch", "Neo4j", "Meilisearch", "SQLite", "Redis"],
         "AI & LLM": [
             "LLM Agents",
             "RAG Pipelines",
             "MCP Tools",
             "LangExtract",
-            "Multilingual NLP (NER, Topic Classification, Sentiment Analysis)",
             "SpaCy",
-            "Hugging Face Transformers"
+            "Hugging Face",
+            "Multilingual NLP (NER, Topic Classification, Sentiment Analysis)",
         ],
         "LLM Tooling": ["Claude Code", "Cursor", "Ollama", "LM Studio"],
-        "Storage": ["Elasticsearch", "PostgreSQL", "Neo4j", "Meilisearch", "SQLite"],
-        "Infrastructure & Tooling": ["Docker", "GitLab CI/CD", "Sentry", "Linux", "Scrapy", "crawl4ai", "BrightData", "Apify"]
+        "Infrastructure & Tooling": ["Docker", "GitLab CI/CD", "Sentry", "Linux", "Scrapy", "crawl4ai"]
     },
     "experience": [
         {
@@ -54,11 +53,11 @@ const cvJson = {
             "period": "Sep 2025 - Present",
             "location": "Sofia, Bulgaria",
             "highlights": [
-                "Leading development of PINGRID - a journalist intelligence platform that scans thousands of publications daily, discovers newly active authors, and keeps journalist profiles current with topics and regional coverage. PR software providers use the API to replace manual media database maintenance.",
-                "Leading development of Annex - a platform that unifies Identrics' AI services for media intelligence. It tracks how narratives develop and spread across networks, surfaces key influencers, and gives clients a single view from first signal through to full analysis. Currently serving enterprise clients across Europe.",
+                "Leading development of <a href='https://identrics.ai/media-contacts/' target='_blank' rel='noopener'>PINGRID</a> - a journalist intelligence platform that scans thousands of publications daily, discovers newly active authors, and keeps journalist profiles current with topics and regional coverage. PR software providers use the API to replace manual media database maintenance.",
+                "Shipping <a href='https://identrics.ai/annex/' target='_blank' rel='noopener'>Annex</a> - a platform that unifies Identrics' AI services for media intelligence. It tracks how narratives develop and spread across networks, surfaces key influencers, and gives clients a single view from first signal through to full analysis. Currently serving enterprise clients across Europe.",
                 "Designed and built TRACE - an API-first, event-driven press release monitoring service for the ANZ market using Python, Prefect, and FastAPI. It detects republished content across thousands of live outlets in under one second from publication. A leading ANZ media monitoring provider replaced their previous vendor to adopt our full NLP service portfolio.",
-                "Built and operated the in-stream NLP enrichment layer inside the Kafka pipelines - NER, Topic Classification, Text Normalisation, and Entity-Based Sentiment Analysis all run before a document hits the index. On-prem multilingual models handle the core pipeline; a multi-provider LLM layer sits on top for classification, summarisation, and entity resolution. The system processes 20M+ documents per month.",
-                "Built Topify - a Python/Prefect pipeline for topic modelling and clustering on documents fetched from Elasticsearch. It builds structured cluster metadata per document and publishes enriched data downstream. Topify powered real-time monitoring of the 2023 Bulgarian regional elections, and the service was offered to the campaign team of Vasil Terziev, now Mayor of Sofia.",
+                "Built and operated the in-stream NLP enrichment layer inside the Kafka pipelines - NER, Topic Classification, Text Normalisation, and <a href='https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/' target='_blank' rel='noopener' title='Award-winning Entity-Based Sentiment Analysis'>Entity-Based Sentiment Analysis</a> all run before a document hits the index. On-prem multilingual models handle the core pipeline; a multi-provider LLM layer sits on top for classification, summarisation, and entity resolution. The system processes 20M+ documents per month.",
+                "Built <a href='https://identrics.ai/annex/' target='_blank' rel='noopener'>Topify</a> - a Python/Prefect pipeline for topic modelling and clustering on documents fetched from Elasticsearch. It builds structured cluster metadata per document and publishes enriched data downstream. Topify powered real-time monitoring of the 2023 Bulgarian regional elections, and the service was offered to the campaign team of current Mayor of Sofia.",
             ]
         },
         {
@@ -71,12 +70,12 @@ const cvJson = {
             "location": "Sofia, Bulgaria",
             "highlights": [
                 "Led a team of 5-10 engineers and personally built the core ingestion pipeline: orchestrated crawling via Scrapy and RabbitMQ across 370,000+ media outlets, producing over 20 million documents per month from print, broadcast, and social sources - processed through Kafka, Logstash, and Docker, indexed in Elasticsearch. Grew the catalogue from a Bulgaria-only operation at ~5M docs/month to a global footprint over 10 years.",
-                "For RDC (risk intelligence), orchestrated ingestion of thousands of sanctions lists via Scrapy and Airflow and designed the data model for sanction entities - enabling structured, queryable watchlist data at scale.",
+                "For Risk Intelligence, orchestrated ingestion of thousands of sanctions lists via Scrapy and Airflow and designed the data model for sanction entities - enabling structured, queryable watchlist data at scale.",
                 "Built OSINT tools for corporate due diligence and adverse media screening using Python, Scrapy, and Google APIs - generating risk profiles from public sources automatically. Reduced manual analyst research time by approximately 70% per investigation.",
                 "Introduced a human-in-the-loop validation dataflow: analysts review and correct NLP enrichment output directly in Google Sheets, with automated sync back into the pipeline.",
-                "Streamlined and automated data enrichment for the REAL Impact Score (Reach, Engagement, Authority, Leverage) - a composite media performance metric offered to ANZ clients for integration into their media monitoring platforms.",
+                "Streamlined and automated data enrichment for the <a href='https://identrics.ai/case-studies/how-we-built-real-impact-score-moving-beyond-vanity-metrics-in-media-intelligence/' target='_blank' rel='noopener'>REAL Impact Score</a> (Reach, Engagement, Authority, Leverage) - a composite media performance metric offered to ANZ clients for integration into their media monitoring platforms.",
                 "Represented Identrics at the Sofia Information Integrity Forum 2025.",
-                "Built Kaspian, an intelligent enrichment engine that formed the data quality layer underpinning all AI-based services the company offers today.",
+                "Built <a href='https://identrics.ai/kaspian/' target='_blank' rel='noopener'>Kaspian</a>, an intelligent enrichment engine that formed the data quality layer underpinning all AI-based services the company offers today.",
             ]
         },
         {
@@ -300,17 +299,17 @@ function renderFooter() {
 initSeo();
 renderHeader();
 renderBio();
+renderOpenTo();
 renderTldr();
 renderSkills();
 renderExperience();
-renderOpenTo();
 renderFooter();
 
 // ── Unified glyph animation ───────────────────────────────────────────────────
 // One tick drives name prefix, section slashes, and theme toggle in lockstep.
 (function initGlyphAnimation() {
-    const frames            = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
-    const toggleDarkEmojis  = ['⭐️', '🔥', '🌈', '☀️', '🌤️'];
+    const frames = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
+    const toggleDarkEmojis = ['⭐️', '🔥', '🌈', '☀️', '🌤️'];
     const toggleLightEmojis = ['🌛', '🌑', '🌚', '❄️'];
     let idx = 0;
 
@@ -332,7 +331,7 @@ renderFooter();
     function updateToggle() {
         const theme = currentTheme();
         const emojis = theme === 'dark' ? toggleDarkEmojis : toggleLightEmojis;
-        const label  = theme === 'dark' ? 'dawn' : 'dusk';
+        const label = theme === 'dark' ? 'dawn' : 'dusk';
         btn.textContent = `${emojis[idx % emojis.length]} ${label}`;
         btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
