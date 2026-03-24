@@ -118,7 +118,7 @@ function initSeo() {
     const canonicalBase = cvJson.contact?.website || `${window.location.origin}${window.location.pathname}`;
     const canonicalUrl = canonicalBase.endsWith('/') ? canonicalBase : `${canonicalBase}/`;
 
-    const seoTitle = `${name} of CTO of Identrics`;
+    const seoTitle = `${name} — CTO at Identrics`;
     const bioText = stripHtmlToText(cvJson.bio);
     const seoDescription = truncateText(`CTO of Identrics. ${bioText}`, 155);
 
@@ -142,10 +142,6 @@ function initSeo() {
     setMetaProperty('og:title', seoTitle);
     setMetaProperty('og:description', seoDescription);
     setMetaProperty('og:url', canonicalUrl);
-
-    setMetaName('twitter:title', seoTitle);
-    setMetaName('twitter:description', seoDescription);
-    setMetaName('twitter:url', canonicalUrl);
 
     // Best-effort keywords from the current cvJson skills (non-critical, SEO depends mostly on content).
     const allSkills = Object.values(cvJson.skills).flat();
