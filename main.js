@@ -1,12 +1,12 @@
 // ── CV Data ──────────────────────────────────────────────────────────────────
 const cvJson = {
     "name": "Simeon Martev",
-    "title": "CTO of Identrics, Technical Architect and last but not least Data & AI Systems Engineer",
-    "bio": "<p>I have been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work sits at the ingestion and enrichment layer - taking millions of documents a day from unstructured sources and turning them into something clean and searchable. I have built multilingual NLP pipelines, and I spend most of my time on the validation layer between models and storage - making sure raw entity output is confidence-scored before it reaches anything downstream.</p><p>I work with LLMs to build enrichment agents - multi-provider model layers for classification, summarisation, and entity resolution at scale. I do my best work in the code, not just the diagram.</p>",
-    "greatestHits": [
-        "The ingestion pipeline I built now processes 20M+ documents a month across 370,000+ outlets. It started as a Bulgarian news crawler. Every scaling step meant replacing something - cron jobs became RabbitMQ, RabbitMQ became Kafka. I made those calls and did the building.",
+    "title": "Is a Data & AI Systems Engineer, Technical Architect and last but not least - CTO of Identrics, company that follows Online Narratives and Disinformation",
+    "bio": "I've been building data pipelines for Media Intelligence and Risk Intelligence for over 15 years. Most of my work works at the ingestion and enrichment layers - taking millions of documents a day from unstructured sources and turning them into clean, searchable data, and usable data. I have built multilingual NLP pipelines, and I spend most of my time on the validation layer between models and storage - making sure raw entity output is confidence-scored before it reaches anything downstream.</p><p>I work with LLMs to build enrichment agents - multi-provider model layers for classification, summarisation, and entity resolution at scale.",
+    "tldr": [
+        "The ingestion pipeline I built now processes 20M+ documents a month across 370,000+ outlets. It started as a news crawler. Every scaling step meant replacing something - cron jobs became RabbitMQ, RabbitMQ became Kafka. I made those calls and did the building.",
         "The enrichment layer runs NER, topic classification, and <a href='https://identrics.ai/blog/what-is-entity-based-sentiment-analysis/' target='_blank' rel='noopener' title='Award-winning Entity-Based Sentiment Analysis'>Entity-Based Sentiment Analysis</a> in-stream inside Kafka, before anything hits the index. I own the validation layer between the models and storage - the part that determines whether model output is actually usable. A multi-provider LLM layer now sits on top for the harder classification and summarisation work.",
-        "Specific things that came out of this: press release detection across thousands of ANZ outlets in under a second, which caused a major monitoring provider to replace their previous vendor. Real-time narrative tracking across the 2023 Bulgarian elections. OSINT tooling that cut manual analyst research time by about 70% per investigation."
+        "Specific things that came out of this: press release detection across thousands of Australia and New Zealandcd outlets in under a second, which caused a major monitoring provider to replace their previous vendor. Real-time narrative tracking across the 2023 Bulgarian elections. OSINT tooling that cut manual analyst research time by about 70% per investigation."
     ],
     "contact": {
         "website": "https://smartev.wtf",
@@ -94,9 +94,9 @@ const cvJson = {
         }
     ],
     "openTo": [
-        "I want to be in the architecture and the code, not just the meeting about it. Roles that fit: Principal or Staff Engineer, VP of Engineering - in teams building search infrastructure, data enrichment at scale, or applied NLP and AI in production.",
+        "Ideally, I want to be involved in the architecture <i>and</i> the code, not just the meeting that does the diagram. Roles that fit: Principal or Staff Engineer, VP of Engineering - in teams building search infrastructure, data enrichment at scale, or applied NLP and AI in production.",
         "I write most of my code through LLM coding agents now - Claude Code, Cursor - and the workflow interests me as much as the systems I build through it.",
-        "Remote or hybrid. Based in Sofia, Bulgaria."
+        "Remote or hybrid. Based in Sofia, Bulgaria, EU"
     ]
 };
 
@@ -202,7 +202,7 @@ function renderBio() {
 
 function renderTldr() {
     const section = makeSection('tldr-heading');
-    const hitsHtml = cvJson.greatestHits.map(h => `<p>${h}</p>`).join('');
+    const hitsHtml = cvJson.tldr.map(h => `<p>${h}</p>`).join('');
     section.innerHTML = `
     <h2 class="section-key" id="tldr-heading"><span class="slash">//</span> tldr</h2>
     <div class="tldr">${hitsHtml}</div>
@@ -302,18 +302,23 @@ renderExperience();
 renderFooter();
 
 // ── Unified glyph animation ───────────────────────────────────────────────────
-// One tick drives name prefix, section slashes, and theme toggle in lockstep.
+// Each tick picks a random frame; the same index drives slashes and the theme toggle emoji (modulo).
 (function initGlyphAnimation() {
-    const frames = ['👀', '🚬', '🍸', '🍤', '🐴', '💳'];
+    const frames = ['👀', '🚬', '🍸', '🍤', '🐴', '💳', '💻', '🖥️', '⌨️', '🐛', '🚀', '🤖', '🎮', '🧩', '🔌', '📟'];
     const toggleDarkEmojis = ['⭐️', '🔥', '🌈', '☀️', '🌤️'];
     const toggleLightEmojis = ['🌛', '🌑', '🌚', '❄️'];
-    let idx = 0;
+
+    function randomFrameIndex() {
+        return Math.floor(Math.random() * frames.length);
+    }
+
+    let idx = randomFrameIndex();
 
     // ── Name prefix ──
     const prefix = document.createElement('span');
     prefix.className = 'name-prefix';
     prefix.setAttribute('aria-hidden', 'true');
-    prefix.textContent = frames[0];
+    prefix.textContent = frames[idx];
     document.querySelector('.header-name').prepend(prefix);
 
     // ── Toggle ──
@@ -345,13 +350,13 @@ renderFooter();
 
     // ── Tick ──
     function tick() {
-        idx = (idx + 1) % frames.length;
+        idx = randomFrameIndex();
         prefix.textContent = frames[idx];
         document.querySelectorAll('.slash').forEach(el => { el.textContent = frames[idx]; });
         updateToggle();
     }
 
-    document.querySelectorAll('.slash').forEach(el => { el.textContent = frames[0]; });
+    document.querySelectorAll('.slash').forEach(el => { el.textContent = frames[idx]; });
     setInterval(tick, 700);
     updateToggle();
 })();
